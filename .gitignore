@@ -1,5 +1,11 @@
 node_modules/
+dashboard/node_modules/
+**/node_modules/
+**/.cache/
+**/.eslintcache
+**/babel-loader/
 .env
+.env.local
 logs/
 *.log
 playwright-report/
