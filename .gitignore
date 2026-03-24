@@ -1,0 +1,8 @@
+node_modules/
+.env
+logs/
+*.log
+playwright-report/
+test-results/
+backend/screenshots/
+dashboard/build/

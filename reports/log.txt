@@ -1,0 +1,20 @@
+
+Running 15 tests using 2 workers
+
+[1A[2K[1/15] [chromium] › tests\test.spec.js:4:1 › Check Login Page Loads
+[1A[2K[2/15] [chromium] › tests\test.spec.js:10:1 › Valid Login Test
+[1A[2K[3/15] [chromium] › tests\test.spec.js:21:1 › Check Products Visible
+[1A[2K[4/15] [chromium] › tests\test.spec.js:33:1 › Add Item to Cart
+[1A[2K[5/15] [chromium] › tests\test.spec.js:45:1 › Logout Test
+[1A[2K[6/15] [firefox] › tests\test.spec.js:4:1 › Check Login Page Loads
+[1A[2K[7/15] [firefox] › tests\test.spec.js:10:1 › Valid Login Test
+[1A[2K[8/15] [firefox] › tests\test.spec.js:21:1 › Check Products Visible
+[1A[2K[9/15] [firefox] › tests\test.spec.js:33:1 › Add Item to Cart
+[1A[2K[10/15] [firefox] › tests\test.spec.js:45:1 › Logout Test
+[1A[2K[11/15] [webkit] › tests\test.spec.js:4:1 › Check Login Page Loads
+[1A[2K[12/15] [webkit] › tests\test.spec.js:10:1 › Valid Login Test
+[1A[2K[13/15] [webkit] › tests\test.spec.js:21:1 › Check Products Visible
+[1A[2K[14/15] [webkit] › tests\test.spec.js:33:1 › Add Item to Cart
+[1A[2K[15/15] [webkit] › tests\test.spec.js:45:1 › Logout Test
+[1A[2K  15 passed (52.7s)
+

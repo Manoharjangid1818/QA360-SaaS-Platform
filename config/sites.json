@@ -1,0 +1,17 @@
+[
+  {
+    "name": "SauceDemo",
+    "url": "https://www.saucedemo.com",
+    "expectedTitle": "Swag Labs"
+  },
+  {
+    "name": "Example",
+    "url": "https://example.com",
+    "expectedTitle": "Example Domain"
+  },
+  {
+    "name": "Automation Practice",
+    "url": "http://automationpractice.com/index.php",
+    "expectedTitle": "My Store"
+  }
+]
