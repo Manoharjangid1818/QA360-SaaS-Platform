@@ -5,4 +5,5 @@ healthcheckTimeout = 100
 
 [build]
 builder = "NIXPACKS"
+buildCommand = "cd backend && npm install"
 

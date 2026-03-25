@@ -4,7 +4,7 @@
   "main": "server.js",
   "scripts": {
     "start": "node server.js",
-    "postinstall": "playwright install chromium"
+    "postinstall": "node scripts/postinstall.js"
   },
   "dependencies": {
     "express": "^4.18.2",

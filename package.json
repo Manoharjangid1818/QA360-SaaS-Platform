@@ -1,0 +1,9 @@
+{
+  "name": "qa360-root",
+  "private": true,
+  "version": "0.0.0",
+  "scripts": {
+    "start": "bash start.sh"
+  }
+}
+
