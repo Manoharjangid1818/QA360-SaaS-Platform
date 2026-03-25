@@ -23,7 +23,7 @@ function App() {
 
     const apiBase = process.env.REACT_APP_API_URL;
     if (!apiBase || !apiBase.trim()) {
-      setErrorText("Missing REACT_APP_API_URL. Set it in .env for local dev or in Vercel.");
+      setErrorText("Missing REACT_APP_API_URL. Set it in .env or Vercel.");
       return;
     }
 
@@ -46,9 +46,7 @@ function App() {
 
       if (!res.ok || data.status !== "success") {
         setErrorText(
-          typeof data.message === "string"
-            ? data.message
-            : `Request failed (${res.status}).`
+          data.error || data.message || `Request failed (${res.status})`
         );
         return;
       }
@@ -57,9 +55,11 @@ function App() {
         message: data.message,
         testedUrl: data.testedUrl ?? trimmedUrl,
         time: data.time ?? "—",
+        output: data.output || "",
       });
+
     } catch {
-      setErrorText("Could not reach the backend. Check the API URL and try again.");
+      setErrorText("❌ Could not reach backend.");
     } finally {
       setLoading(false);
     }
@@ -70,64 +70,67 @@ function App() {
       style={{
         textAlign: "center",
         marginTop: "64px",
-        fontFamily: "system-ui, Arial, sans-serif",
-        maxWidth: "520px",
+        fontFamily: "system-ui, Arial",
+        maxWidth: "600px",
         marginLeft: "auto",
         marginRight: "auto",
-        padding: "0 16px",
       }}
     >
-      <h1 style={{ marginBottom: "8px" }}>QA360 Website Testing Tool 🚀</h1>
-      <p style={{ color: "#555", marginBottom: "24px" }}>
-        Enter any website URL to test
-      </p>
+      <h1>QA360 Website Testing Tool 🚀</h1>
+      <p>Enter any website URL to test</p>
 
       <input
         type="text"
         placeholder="https://example.com"
         value={url}
         onChange={(e) => setUrl(e.target.value)}
-        style={{ padding: "10px", width: "100%", maxWidth: "400px", boxSizing: "border-box" }}
+        style={{ padding: "10px", width: "100%" }}
         disabled={loading}
       />
 
-      <div style={{ marginTop: "16px" }}>
-        <button type="button" onClick={runTest} disabled={loading}>
-          {loading ? "Running..." : "Run Test"}
-        </button>
-      </div>
+      <br /><br />
 
-      {errorText ? (
-        <p style={{ color: "#b00020", marginTop: "24px" }} role="alert">
-          {errorText}
-        </p>
-      ) : null}
+      <button onClick={runTest} disabled={loading}>
+        {loading ? "Running..." : "Run Test"}
+      </button>
 
-      {successPayload ? (
+      {errorText && (
+        <p style={{ color: "red", marginTop: "20px" }}>{errorText}</p>
+      )}
+
+      {successPayload && (
         <div
           style={{
-            marginTop: "24px",
+            marginTop: "20px",
             textAlign: "left",
             background: "#f5f5f5",
+            padding: "15px",
             borderRadius: "8px",
-            padding: "16px 20px",
-            lineHeight: 1.6,
           }}
         >
-          <div>
-            <strong>Status:</strong> success
-          </div>
-          <div>
-            <strong>Message:</strong> {successPayload.message}
-          </div>
-          <div>
-            <strong>URL:</strong> {successPayload.testedUrl}
-          </div>
-          <div>
-            <strong>Time:</strong> {successPayload.time}
-          </div>
+          <p><strong>Status:</strong> success</p>
+          <p><strong>Message:</strong> {successPayload.message}</p>
+          <p><strong>URL:</strong> {successPayload.testedUrl}</p>
+          <p><strong>Time:</strong> {successPayload.time}</p>
+
+          {successPayload.output && (
+            <>
+              <p><strong>Logs:</strong></p>
+              <pre
+                style={{
+                  background: "#000",
+                  color: "#0f0",
+                  padding: "10px",
+                  overflowX: "auto",
+                  maxHeight: "200px"
+                }}
+              >
+                {successPayload.output}
+              </pre>
+            </>
+          )}
         </div>
-      ) : null}
+      )}
     </div>
   );
 }

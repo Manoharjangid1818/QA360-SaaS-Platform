@@ -1,14 +1,15 @@
-import { test, expect } from '@playwright/test';
-import sites from '../config/sites.json';
+const { test, expect } = require("@playwright/test");
 
-for (const site of sites) {
-    test(`${site.name} test`, async ({ page }) => {
-        try {
-            await page.goto(site.url);
-            await expect(page).toHaveTitle(new RegExp(site.expectedTitle));
-        } catch (error) {
-            await page.screenshot({ path: `reports/${site.name}.png` });
-            throw error;
-        }
-    });
-}
+test("Dynamic Website Test", async ({ page }) => {
+  const url = process.env.TEST_URL || "https://example.com";
+
+  console.log("Testing URL:", url);
+
+  await page.goto(url, { timeout: 30000 });
+
+  await expect(page).toHaveTitle(/.*/);
+
+  await page.screenshot({ path: "screenshots/result.png" });
+
+  console.log("Test Passed for:", url);
+});

@@ -1,15 +1,14 @@
 {
-  "name": "qa360",
+  "name": "qa360-backend",
   "version": "1.0.0",
-  "main": "backend/server.js",
+  "main": "server.js",
   "scripts": {
-    "start": "node backend/server.js",
-    "build": "npm --prefix dashboard run build",
-    "test": "npm --prefix dashboard run test -- --watchAll=false"
+    "start": "npx playwright install --with-deps && node server.js"
   },
   "dependencies": {
+    "@playwright/test": "^1.42.1",
     "cors": "^2.8.5",
     "express": "^4.18.2",
-    "react-scripts": "^5.0.1"
+    "express-rate-limit": "^7.0.0"
   }
 }
