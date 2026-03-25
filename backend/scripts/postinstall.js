@@ -1,12 +1,9 @@
 const { execSync } = require("child_process");
 
-// Playwright's `--with-deps` installs the Linux system packages Chromium needs.
-// On non-Linux (e.g., Windows local dev), it would fail, so we keep it conditional.
-const platform = process.platform;
-const cmd =
-  platform === "linux"
-    ? "npx playwright install --with-deps chromium"
-    : "npx playwright install chromium";
+// Install only the Playwright browser binaries here.
+// System libraries are installed at runtime in `start.sh` (Railway runtime container),
+// which avoids build-time failures from missing apt/OS tooling.
+const cmd = "npx playwright install chromium";
 
 execSync(cmd, { stdio: "inherit" });
 

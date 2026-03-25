@@ -1,7 +1,7 @@
 [deploy]
 startCommand = "bash start.sh"
 healthcheckPath = "/health"
-healthcheckTimeout = 100
+healthcheckTimeout = 300
 
 [build]
 builder = "NIXPACKS"

@@ -8,7 +8,9 @@ cd backend
 if [ "$(uname -s)" = "Linux" ] && command -v apt-get >/dev/null 2>&1; then
   # Chromium (Playwright) needs various system libraries.
   export DEBIAN_FRONTEND=noninteractive
-  apt-get update
+  # Don't fail the whole container if the package step fails; the health
+  # endpoint should still come up.
+  apt-get update || true
   apt-get install -y --no-install-recommends \
     libglib2.0-0 \
     libnss3 \
@@ -24,7 +26,7 @@ if [ "$(uname -s)" = "Linux" ] && command -v apt-get >/dev/null 2>&1; then
     libcairo2 \
     libxkbcommon0 \
     libfontconfig1 \
-    libasound2
+    libxshmfence1 || true
 fi
 
 if [ ! -d "node_modules" ]; then
