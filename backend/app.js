@@ -32,7 +32,7 @@ app.get("/health", (_req, res) => {
   res.status(200).json({ status: "ok" });
 });
 
-app.post("/api/test", async (req, res) => {
+async function runTestHandler(req, res) {
   const inputUrl = (req.body?.url || "").trim();
 
   if (!inputUrl) {
@@ -154,6 +154,12 @@ app.post("/api/test", async (req, res) => {
     if (context) await context.close().catch(() => {});
     if (browser) await browser.close().catch(() => {});
   }
-});
+}
+
+// Primary endpoint (new)
+app.post("/api/test", runTestHandler);
+
+// Backward-compatible alias (older frontend may call this)
+app.post("/run-test", runTestHandler);
 
 module.exports = app;
