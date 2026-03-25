@@ -38,6 +38,11 @@ async function runTestHandler(req, res) {
   if (!inputUrl) {
     return res.status(400).json({
       success: false,
+      status: "failed",
+      message: "URL is required.",
+      testedUrl: "",
+      time: "?",
+      output: "",
       logs: [],
       errors: ["URL is required."],
       performance: {},
@@ -53,6 +58,11 @@ async function runTestHandler(req, res) {
   } catch {
     return res.status(400).json({
       success: false,
+      status: "failed",
+      message: "Please provide a valid http/https URL.",
+      testedUrl: inputUrl,
+      time: "?",
+      output: "",
       logs: [],
       errors: ["Please provide a valid http/https URL."],
       performance: {},
@@ -121,9 +131,19 @@ async function runTestHandler(req, res) {
     };
 
     const success = errors.length === 0;
+    const output = logs.join("\n");
+    const testedUrl = targetUrl;
+    const time = typeof performance.totalMs === "number" ? `${performance.totalMs}ms` : "?";
+    const status = success ? "success" : "failed";
 
     return res.status(success ? 200 : 422).json({
       success,
+      // Backward-compatible response fields for older frontend bundles.
+      status,
+      message: summary,
+      testedUrl,
+      time,
+      output,
       logs,
       errors,
       performance,
@@ -141,6 +161,11 @@ async function runTestHandler(req, res) {
 
     return res.status(500).json({
       success: false,
+      status: "failed",
+      message: "Website test failed due to server error.",
+      testedUrl: req.body?.url?.trim?.() || "",
+      time: "?",
+      output: logs.join("\n"),
       logs,
       errors,
       performance: {
