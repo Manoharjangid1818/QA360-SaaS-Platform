@@ -1,0 +1,186 @@
+I have a full-stack QA automation project called QA360.
+
+Tech stack:
+- Backend: Node.js + Express (backend/app.js, server.js)
+- Frontend: React (dashboard/)
+- Testing: Playwright (tests/, e2e/)
+- Scheduler: node-cron (scheduler/cron.js)
+- Reports: stored in /reports and /screenshots
+
+The system runs automated website QA tests using Playwright and shows results in a React dashboard.
+
+I want to upgrade this project into a more advanced SaaS-like QA monitoring tool by adding the following features:
+
+----------------------------------------
+1. SCHEDULER CONTROL (UI + BACKEND)
+----------------------------------------
+
+Current:
+- Static cron job in scheduler/cron.js
+
+Upgrade:
+- Make scheduler dynamic and controllable from UI
+
+Backend:
+- Create APIs:
+  POST /scheduler/start
+  POST /scheduler/stop
+  POST /scheduler/set-frequency
+  GET /scheduler/status
+
+- Use node-cron dynamically (store cron job in variable)
+- Support frequencies:
+  - every 5 minutes
+  - every 15 minutes
+  - hourly
+  - daily
+- Allow changing frequency without restarting server
+- Store current state in memory or JSON
+
+Frontend (React):
+- Add Scheduler Panel:
+  - Dropdown for frequency
+  - Start button
+  - Stop button
+  - Show current status
+
+----------------------------------------
+2. PDF REPORT GENERATION
+----------------------------------------
+
+Backend:
+- Use pdfkit or puppeteer
+- API:
+  GET /report/pdf?site=<url>
+
+- Generate PDF including:
+  - Website URL
+  - Pass/Fail summary
+  - Error logs
+  - Timestamp
+  - Screenshots (if possible)
+
+- Save PDF in /reports
+
+Frontend:
+- Add "Download PDF" button
+- Trigger download from API
+
+Bonus:
+- Generate shareable link
+
+----------------------------------------
+3. LIGHTHOUSE INTEGRATION
+----------------------------------------
+
+Backend:
+- Install lighthouse + chrome-launcher
+- API:
+  POST /test/lighthouse
+
+- Run lighthouse on given URL
+- Extract:
+  - Performance
+  - SEO
+  - Accessibility
+  - Best Practices
+
+- Merge lighthouse data with Playwright results
+
+Frontend:
+- Show scores using charts or progress bars
+
+----------------------------------------
+4. VISUAL REGRESSION TESTING
+----------------------------------------
+
+Testing:
+- Capture screenshots during Playwright runs
+
+- Maintain folders:
+  /baseline
+  /current
+  /diff
+
+- Use pixelmatch to compare images
+- Generate diff image
+
+Backend:
+- Return:
+  - changed: true/false
+  - diff percentage
+
+Frontend:
+- Display:
+  - Before image
+  - After image
+  - Diff image
+
+----------------------------------------
+5. SMART ERROR CLASSIFICATION
+----------------------------------------
+
+Backend:
+- Create function classifyError(errorMessage)
+
+Categories:
+- Critical:
+  - JS runtime errors
+  - Failed network requests
+- Warning:
+  - Deprecated APIs
+  - Minor console warnings
+- Ignore:
+  - WebGL warnings
+  - Known safe errors
+
+- Output format:
+{
+  message: "...",
+  type: "critical | warning | ignore"
+}
+
+- Filter ignored errors
+- Count critical and warnings
+
+Frontend:
+- Display grouped errors:
+  - Critical
+  - Warning
+  - Ignore (optional hidden)
+
+----------------------------------------
+GENERAL REQUIREMENTS
+----------------------------------------
+
+- Keep code modular and clean
+- Follow my project structure:
+  backend/
+  dashboard/
+  scheduler/
+  tests/
+  config/
+
+- Use async/await properly
+- Optimize performance
+- Ensure APIs integrate with existing Playwright flow
+- Do not break existing functionality
+
+----------------------------------------
+OUTPUT REQUIRED
+----------------------------------------
+
+1. Full backend code changes (Express APIs, scheduler, lighthouse, PDF, classification)
+2. Full frontend React components (scheduler UI, report UI, charts, comparison UI)
+3. Required npm packages
+4. Folder structure updates
+5. Step-by-step integration guide
+
+Also adapt everything specifically to my QA360 structure:
+- backend/app.js
+- scheduler/cron.js
+- dashboard/src/App.js
+
+----------------------------------------
+
+Make sure everything works together as one system.
