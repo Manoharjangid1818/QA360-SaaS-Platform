@@ -35,6 +35,8 @@ function classifyError(text) {
 
 const app = express();
 
+app.set('trust proxy', 1);
+
 const REPORTS_DIR = path.join(__dirname, '../../reports');
 
 const corsOrigins = process.env.CORS_ORIGINS

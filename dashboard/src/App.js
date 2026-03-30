@@ -271,7 +271,7 @@ function App() {
         <p style={{ color: "red", marginTop: "14px" }}>{errorText}</p>
       )}
 
-      {(logs.length > 0 || errors.length > 0 || summary || screenshotBase64 || Object.keys(lighthouseScores).length || visual || classifiedErrors.length) && (
+      {!!(logs.length > 0 || errors.length > 0 || summary || screenshotBase64 || Object.keys(lighthouseScores).length || visual || classifiedErrors.length) && (
         <div
           style={{
             marginTop: 20,
