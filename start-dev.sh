@@ -1,4 +1,8 @@
 #!/bin/bash
+
+# Point Playwright to the system Chromium (avoids missing shared library issues)
+export PLAYWRIGHT_CHROMIUM_EXECUTABLE_PATH="$(which chromium 2>/dev/null || echo '')"
+
 # Start backend on port 3001
 PORT=3001 node backend/scripts/start.js &
 BACKEND_PID=$!

@@ -36,7 +36,11 @@ async function runSingleTest(site) {
   let browser, context, page;
   try {
     logs.push(`Testing ${site.url}`);
-    browser = await chromium.launch({ headless: true });
+    const launchOpts = { headless: true };
+    if (process.env.PLAYWRIGHT_CHROMIUM_EXECUTABLE_PATH) {
+      launchOpts.executablePath = process.env.PLAYWRIGHT_CHROMIUM_EXECUTABLE_PATH;
+    }
+    browser = await chromium.launch(launchOpts);
     context = await browser.newContext();
     page = await context.newPage();
 
@@ -118,7 +122,8 @@ function startScheduler(frequency) {
   currentFrequency = frequency;
   
   console.log(`Scheduler started with ${frequency} frequency`);
-  return { success: true, frequency, nextRun: cronJob.nextDates().toDate() };
+  const nextRun = cronJob.getNextRun ? cronJob.getNextRun().toISOString() : null;
+  return { success: true, frequency, nextRun };
 }
 
 function stopScheduler() {
@@ -143,10 +148,19 @@ function setFrequency(frequency) {
 }
 
 function getStatus() {
+  let nextRun = null;
+  let running = false;
+  if (cronJob) {
+    try {
+      nextRun = cronJob.getNextRun ? cronJob.getNextRun().toISOString() : null;
+    } catch (_) {}
+    const status = cronJob.getStatus ? cronJob.getStatus() : null;
+    running = status === 'scheduled' || status === 'running';
+  }
   return {
-    running: !!cronJob && !cronJob.stopped,
+    running,
     frequency: currentFrequency,
-    nextRun: cronJob ? cronJob.nextDates().toDate() : null,
+    nextRun,
     sitesPath: SITES_PATH
   };
 }

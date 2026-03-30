@@ -117,10 +117,11 @@ async function runTestHandler(req, res) {
 
   try {
     logs.push("Launching Chromium in headless mode...");
-    browser = await chromium.launch({ 
-      headless: true,
-      ignoreHTTPSErrors: true 
-    });
+    const launchOpts = { headless: true, ignoreHTTPSErrors: true };
+    if (process.env.PLAYWRIGHT_CHROMIUM_EXECUTABLE_PATH) {
+      launchOpts.executablePath = process.env.PLAYWRIGHT_CHROMIUM_EXECUTABLE_PATH;
+    }
+    browser = await chromium.launch(launchOpts);
     context = await browser.newContext({
       bypassCSP: true
     });
