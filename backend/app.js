@@ -254,6 +254,28 @@ async function runTestHandler(req, res) {
       ? `Website test passed. Errors: ${criticalCount} critical, ${warningCount} warnings, ${ignoreCount} ignored.`
       : `Test issues. Errors: ${criticalCount} critical, ${warningCount} warnings.`;
 
+    // Save result to disk so PDF report can be generated
+    const siteName = parsedUrl.hostname.replace(/^www\./, '');
+    try {
+      const { saveTestResult } = require('./utils/saveTestResult.js');
+      await saveTestResult({
+        site: siteName,
+        url: targetUrl,
+        success,
+        title,
+        statusCode,
+        performance,
+        logs,
+        errors,
+        warnings,
+        classifiedErrors,
+        errorStats: { critical: criticalCount, warning: warningCount, ignore: ignoreCount },
+        screenshot: screenshotBase64,
+      });
+    } catch (saveErr) {
+      console.error('Failed to save test result:', saveErr.message);
+    }
+
     return res.status(success ? 200 : 422).json({
       success,
       status,
@@ -395,7 +417,7 @@ app.get('/report/pdf', async (req, res) => {
     const pdfPath = path.join(REPORTS_DIR, filename);
 
     // Ensure reports dir
-    await fs.promises.mkdir(REPORTS_DIR, { recursive: true });
+    await fs.mkdir(REPORTS_DIR, { recursive: true });
 
     const doc = new PDFDocument();
     res.setHeader('Content-Type', 'application/pdf');
