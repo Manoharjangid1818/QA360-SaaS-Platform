@@ -7,9 +7,15 @@
     "postinstall": "node scripts/postinstall.js"
   },
   "dependencies": {
-    "express": "^4.18.2",
     "cors": "^2.8.5",
+    "express": "^4.18.2",
     "express-rate-limit": "^6.7.0",
-    "playwright": "^1.53.2"
+    "node-cron": "^4.2.1",
+    "pdfkit": "^0.18.0",
+    "playwright": "^1.53.2",
+    "lighthouse": "latest",
+    "chrome-launcher": "latest",
+    "pixelmatch": "latest",
+    "pngjs": "latest"
   }
 }

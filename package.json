@@ -1,9 +1,27 @@
 {
-  "name": "qa360-root",
+  "name": "qa360",
   "private": true,
-  "version": "0.0.0",
+  "version": "1.0.0",
+  "description": "QA360 SaaS - Website Testing Tool (Backend + Frontend)",
   "scripts": {
-    "start": "bash start.sh"
+    "start": "bash start.sh",
+    "dev:backend": "cd backend && npm start",
+    "dev:frontend": "cd dashboard && npm start",
+    "build": "npm run build:frontend",
+"build:frontend": "cd dashboard && rmdir /s /q node_modules 2>nul && rmdir /s /q build 2>nul && npm install && npm run build",
+    "build:full": "npm run build:frontend && echo '✅ Full build complete. Backend serves dashboard/build statically'",
+    "test:local": "npm run build:full && echo '🚀 Starting at http://localhost:8080' && cd backend && npm start",
+    "fly:status": "fly status",
+    "fly:deploy": "fly deploy",
+    "fly:logs": "fly logs",
+    "fly:open": "fly open",
+    "test:health": "curl -f http://localhost:8080/health || echo 'Health check failed'"
+  },
+  "engines": {
+    "node": ">=20",
+    "npm": ">=10"
+  },
+  "repository": {
+    "type": "git"
   }
 }
-

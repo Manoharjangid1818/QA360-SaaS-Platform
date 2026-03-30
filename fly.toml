@@ -1,0 +1,46 @@
+app = "qa360"
+primary_region = "ord"
+
+[build]
+  builder = "paketobuildpacks/builder:base"
+  buildpacks = [
+    "gcr.io/paketo-buildpacks/nodejs"
+  ]
+
+[build.args]
+  "BP_NODE_PROJECT_PATH" = "."
+
+[[buildpacks]]
+  id = "gcr.io/paketo-buildpacks/build-system-nodejs"
+  optional = false
+
+[deploy]
+  strategy = "bluegreen"
+
+[env]
+  PORT = "8080"
+  CORS_ORIGINS = "*"
+
+[services]
+  http_checks = []
+  internal_port = 8080
+  min_machines_running = 0
+  processes = ["app"]
+
+  [[services.concurrency]]
+    hard_limit = 25
+    soft_limit = 20
+    type = "connections"
+
+  [[services.ports]]
+    handlers = ["http"]
+    port = 80
+
+  [[services.ports]]
+    handlers = ["tls", "http"]
+    port = 443
+
+[http_service]
+  auto_stop_machines = true
+  auto_start_machines = true
+  min_machines_running = 0
