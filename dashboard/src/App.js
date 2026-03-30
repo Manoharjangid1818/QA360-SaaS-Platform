@@ -1,9 +1,7 @@
 import { useState, useEffect } from "react";
 import axios from 'axios';
 
-// Fly.io: Backend serves frontend at /, API at /api/test (same-origin).
-// Local dev: Uses REACT_APP_API_URL from .env (e.g. http://localhost:8080).
-const API_URL = process.env.REACT_APP_API_URL || '/';
+const API_URL = process.env.REACT_APP_API_URL || '';
 
 const apiClient = axios.create({
   baseURL: API_URL.replace(/\/$/, ''),
