@@ -9,7 +9,7 @@ let currentFrequency = 'disabled';
 let isRunning = false;
 
 const SITES_PATH = path.join(__dirname, '../../config/sites.json');
-const TEST_RESULTS_DIR = path.join(__dirname, '../../test-results');
+const TEST_RESULTS_DIR = path.join(__dirname, '../test-results');
 
 const cronPatterns = {
   '5min': '*/5 * * * *',

@@ -1,7 +1,7 @@
 const fs = require('fs').promises;
 const path = require('path');
 
-const TEST_RESULTS_DIR = path.join(__dirname, '../../test-results');
+const TEST_RESULTS_DIR = path.join(__dirname, '../test-results');
 
 async function ensureDir(dirPath) {
   try {

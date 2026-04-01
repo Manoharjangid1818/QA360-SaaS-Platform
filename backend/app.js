@@ -37,7 +37,7 @@ const app = express();
 
 app.set('trust proxy', 1);
 
-const REPORTS_DIR = path.join(__dirname, '../../reports');
+const REPORTS_DIR = path.join(__dirname, '../reports');
 
 const corsOrigins = process.env.CORS_ORIGINS
   ? process.env.CORS_ORIGINS.split(",").map((origin) => origin.trim())
@@ -189,8 +189,8 @@ async function runTestHandler(req, res) {
 
     // Visual regression
     const siteKey = targetUrl.replace(/https?:\/\//, '').replace(/[^a-zA-Z0-9]/g, '_');
-    const baselinesDir = path.join(__dirname, '../../test-results/baselines');
-    const currentDir = path.join(__dirname, '../../test-results/current');
+    const baselinesDir = path.join(__dirname, '../test-results/baselines');
+    const currentDir = path.join(__dirname, '../test-results/current');
     const baselinePath = path.join(baselinesDir, `${siteKey}.png`);
     const currentPath = path.join(currentDir, `${siteKey}.png`);
     const diffPath = path.join(currentDir, `${siteKey}_diff.png`);
