@@ -1,0 +1,145 @@
+Build a full-stack SaaS web application called **QA360** using Next.js (App Router) and Supabase.
+
+🎯 Goal:
+A QA/Test Management platform with AI-powered test case generation and Playwright automation dashboard.
+
+🧱 Tech Stack:
+
+* Frontend + Backend: Next.js (latest, App Router)
+* Styling: Tailwind CSS
+* Database & Auth: Supabase
+* Automation: Playwright
+* AI: OpenAI API
+
+🔐 Authentication:
+
+* Implement Supabase Auth (Email + Password)
+* Protected routes using middleware
+* Proper session handling
+
+📦 Core Features (MVP First):
+
+1. Dashboard:
+
+* Show:
+
+  * Total Test Cases
+  * Passed / Failed
+  * Recent Activity
+* Simple charts
+
+2. Test Case Management:
+
+* CRUD operations
+* Fields:
+
+  * Title
+  * Description
+  * Steps
+  * Expected Result
+  * Priority
+* Store in Supabase
+
+3. Bug Tracking:
+
+* Fields:
+
+  * Title
+  * Description
+  * Steps
+  * Severity
+  * Status
+* Link bugs with test cases
+
+4. AI Test Case Generator:
+
+* Input: Requirement
+* Output:
+
+  * Positive cases
+  * Negative cases
+  * Edge cases
+* Save generated cases
+
+5. Playwright Integration:
+
+* Upload JSON report
+* Parse results
+* Show pass/fail dashboard
+
+📊 Database Tables:
+
+* users
+* test_cases
+* bugs
+* test_runs
+
+🎨 UI:
+
+* Clean SaaS dashboard
+* Sidebar navigation
+* Responsive design
+
+⚙️ Folder Structure:
+
+* /app
+* /components
+* /lib
+* /hooks
+* /types
+
+🚀 VERY IMPORTANT: LOCAL VS CODE SETUP
+
+1. Ensure project runs locally using:
+   npm install
+   npm run dev
+
+2. Use default Next.js config:
+
+   * Host: localhost
+   * Port: 3000
+
+3. Provide `.env.local` setup:
+   NEXT_PUBLIC_SUPABASE_URL=
+   NEXT_PUBLIC_SUPABASE_ANON_KEY=
+   OPENAI_API_KEY=
+
+4. Include clear setup steps:
+
+   * Install Node.js (v18 or higher recommended)
+   * Run project locally
+   * Connect Supabase project
+
+5. Handle common local issues:
+
+   * Environment variables not loading
+   * CORS issues
+   * API route errors
+
+6. Ensure:
+
+   * No hardcoded URLs
+   * No deployment-specific configs (Replit/Vercel only configs should be optional)
+
+7. Add fallback mock data if Supabase is not connected
+
+🧪 BONUS:
+
+* Add sample Playwright test
+* Provide seed data
+
+📌 FINAL OUTPUT MUST INCLUDE:
+
+1. Full project code
+2. Step-by-step setup guide (VS Code)
+3. .env.local example
+4. Commands to run locally
+5. Error-free working app
+
+⚠️ IMPORTANT:
+
+* Code must run without errors on first run
+* Keep setup beginner-friendly
+* Add comments in code
+
+Build step-by-step and verify the project runs successfully on localhost:3000.

@@ -1,27 +1,32 @@
 {
   "name": "qa360",
-  "private": true,
   "version": "1.0.0",
-  "description": "QA360 SaaS - Website Testing Tool (Backend + Frontend)",
+  "private": true,
   "scripts": {
-    "start": "bash start.sh",
-    "dev:backend": "cd backend && npm start",
-    "dev:frontend": "cd dashboard && npm start",
-    "build": "npm run build:frontend",
-"build:frontend": "cd dashboard && rmdir /s /q node_modules 2>nul && rmdir /s /q build 2>nul && npm install && npm run build",
-    "build:full": "npm run build:frontend && echo '✅ Full build complete. Backend serves dashboard/build statically'",
-    "test:local": "npm run build:full && echo '🚀 Starting at http://localhost:8080' && cd backend && npm start",
-    "fly:status": "fly status",
-    "fly:deploy": "fly deploy",
-    "fly:logs": "fly logs",
-    "fly:open": "fly open",
-    "test:health": "curl -f http://localhost:8080/health || echo 'Health check failed'"
+    "dev": "next dev -p 5000",
+    "build": "next build",
+    "start": "next start -p 5000",
+    "lint": "next lint"
   },
-  "engines": {
-    "node": ">=20",
-    "npm": ">=10"
+  "dependencies": {
+    "@supabase/ssr": "^0.5.2",
+    "@supabase/supabase-js": "^2.47.12",
+    "autoprefixer": "^10.4.27",
+    "clsx": "^2.1.1",
+    "lucide-react": "^0.468.0",
+    "next": "^15.1.6",
+    "openai": "^4.77.3",
+    "postcss": "^8.5.8",
+    "react": "^18.3.1",
+    "react-dom": "^18.3.1",
+    "recharts": "^2.15.0",
+    "tailwind-merge": "^2.6.0",
+    "tailwindcss": "^3.4.19"
   },
-  "repository": {
-    "type": "git"
+  "devDependencies": {
+    "@types/node": "^22.10.5",
+    "@types/react": "^18.3.18",
+    "@types/react-dom": "^18.3.5",
+    "typescript": "^5.7.3"
   }
 }

@@ -1,0 +1,145 @@
+// Mock data used when Supabase is not configured
+// This ensures the app works out-of-the-box for demos and local dev
+
+import type { TestCase, Bug, TestRun, DashboardStats } from '@/types';
+
+export const mockTestCases: TestCase[] = [
+  {
+    id: 'tc-1',
+    title: 'User Login with valid credentials',
+    description: 'Verify that a user can log in with a valid email and password.',
+    steps: '1. Navigate to /login\n2. Enter valid email\n3. Enter valid password\n4. Click "Sign In"',
+    expected_result: 'User is redirected to the dashboard and sees a welcome message.',
+    priority: 'high',
+    status: 'passed',
+    created_at: new Date(Date.now() - 3 * 24 * 60 * 60 * 1000).toISOString(),
+    updated_at: new Date(Date.now() - 1 * 24 * 60 * 60 * 1000).toISOString(),
+  },
+  {
+    id: 'tc-2',
+    title: 'User Login with invalid password',
+    description: 'Verify that login fails gracefully with an incorrect password.',
+    steps: '1. Navigate to /login\n2. Enter valid email\n3. Enter wrong password\n4. Click "Sign In"',
+    expected_result: 'An error message "Invalid credentials" is shown. User remains on the login page.',
+    priority: 'high',
+    status: 'passed',
+    created_at: new Date(Date.now() - 3 * 24 * 60 * 60 * 1000).toISOString(),
+    updated_at: new Date(Date.now() - 1 * 24 * 60 * 60 * 1000).toISOString(),
+  },
+  {
+    id: 'tc-3',
+    title: 'Create new test case',
+    description: 'Verify that a QA engineer can create a new test case via the UI.',
+    steps: '1. Navigate to Test Cases\n2. Click "New Test Case"\n3. Fill in all required fields\n4. Click "Save"',
+    expected_result: 'The new test case appears in the list with status "Pending".',
+    priority: 'medium',
+    status: 'pending',
+    created_at: new Date(Date.now() - 2 * 24 * 60 * 60 * 1000).toISOString(),
+    updated_at: new Date(Date.now() - 2 * 24 * 60 * 60 * 1000).toISOString(),
+  },
+  {
+    id: 'tc-4',
+    title: 'Upload Playwright JSON report',
+    description: 'Verify that a Playwright JSON report can be uploaded and parsed correctly.',
+    steps: '1. Navigate to Playwright section\n2. Click "Upload Report"\n3. Select valid .json file\n4. Click "Parse"',
+    expected_result: 'Dashboard shows pass/fail metrics from the uploaded report.',
+    priority: 'medium',
+    status: 'failed',
+    created_at: new Date(Date.now() - 1 * 24 * 60 * 60 * 1000).toISOString(),
+    updated_at: new Date(Date.now() - 1 * 24 * 60 * 60 * 1000).toISOString(),
+  },
+  {
+    id: 'tc-5',
+    title: 'AI test case generation from requirement',
+    description: 'Verify that the AI can generate valid test cases from a text requirement.',
+    steps: '1. Navigate to AI Generator\n2. Enter a feature requirement\n3. Click "Generate"\n4. Review generated cases',
+    expected_result: 'AI generates positive, negative, and edge test cases. Cases can be saved.',
+    priority: 'low',
+    status: 'pending',
+    created_at: new Date(Date.now() - 1 * 60 * 60 * 1000).toISOString(),
+    updated_at: new Date(Date.now() - 1 * 60 * 60 * 1000).toISOString(),
+  },
+];
+
+export const mockBugs: Bug[] = [
+  {
+    id: 'bug-1',
+    title: 'Login button unresponsive on Safari iOS',
+    description: 'The login button does not respond to taps on Safari iOS 16+.',
+    steps_to_reproduce: '1. Open app on iPhone with Safari\n2. Enter credentials\n3. Tap "Sign In"',
+    severity: 'high',
+    status: 'open',
+    test_case_id: 'tc-1',
+    created_at: new Date(Date.now() - 2 * 24 * 60 * 60 * 1000).toISOString(),
+    updated_at: new Date(Date.now() - 2 * 24 * 60 * 60 * 1000).toISOString(),
+  },
+  {
+    id: 'bug-2',
+    title: 'Error message not cleared after successful login attempt',
+    description: 'If a user first fails login then succeeds, the error message remains visible.',
+    steps_to_reproduce: '1. Enter wrong password and get error\n2. Enter correct password\n3. Observe error still shown',
+    severity: 'medium',
+    status: 'in_progress',
+    test_case_id: 'tc-2',
+    created_at: new Date(Date.now() - 1 * 24 * 60 * 60 * 1000).toISOString(),
+    updated_at: new Date(Date.now() - 6 * 60 * 60 * 1000).toISOString(),
+  },
+  {
+    id: 'bug-3',
+    title: 'Report upload fails for large JSON files',
+    description: 'Playwright JSON reports exceeding 5MB fail to parse with a timeout error.',
+    steps_to_reproduce: '1. Generate large Playwright suite\n2. Upload resulting JSON\n3. Observe failure',
+    severity: 'critical',
+    status: 'open',
+    created_at: new Date(Date.now() - 3 * 60 * 60 * 1000).toISOString(),
+    updated_at: new Date(Date.now() - 3 * 60 * 60 * 1000).toISOString(),
+  },
+];
+
+export const mockTestRuns: TestRun[] = [
+  {
+    id: 'run-1',
+    name: 'Smoke Test Suite - v1.2',
+    total: 45,
+    passed: 38,
+    failed: 5,
+    skipped: 2,
+    duration_ms: 124500,
+    created_at: new Date(Date.now() - 1 * 24 * 60 * 60 * 1000).toISOString(),
+  },
+  {
+    id: 'run-2',
+    name: 'Regression Suite - v1.1',
+    total: 120,
+    passed: 115,
+    failed: 4,
+    skipped: 1,
+    duration_ms: 380000,
+    created_at: new Date(Date.now() - 3 * 24 * 60 * 60 * 1000).toISOString(),
+  },
+  {
+    id: 'run-3',
+    name: 'Auth Module Tests',
+    total: 20,
+    passed: 18,
+    failed: 2,
+    skipped: 0,
+    duration_ms: 45000,
+    created_at: new Date(Date.now() - 7 * 24 * 60 * 60 * 1000).toISOString(),
+  },
+];
+
+export const mockDashboardStats: DashboardStats = {
+  totalTestCases: mockTestCases.length,
+  passed: mockTestCases.filter((t) => t.status === 'passed').length,
+  failed: mockTestCases.filter((t) => t.status === 'failed').length,
+  pending: mockTestCases.filter((t) => t.status === 'pending').length,
+  totalBugs: mockBugs.length,
+  openBugs: mockBugs.filter((b) => b.status === 'open').length,
+  recentActivity: [
+    { id: '1', type: 'test_case', action: 'created', title: 'AI test case generation from requirement', timestamp: new Date(Date.now() - 1 * 60 * 60 * 1000).toISOString() },
+    { id: '2', type: 'bug', action: 'created', title: 'Report upload fails for large JSON files', timestamp: new Date(Date.now() - 3 * 60 * 60 * 1000).toISOString() },
+    { id: '3', type: 'bug', action: 'updated', title: 'Error message not cleared after successful login', timestamp: new Date(Date.now() - 6 * 60 * 60 * 1000).toISOString() },
+    { id: '4', type: 'test_run', action: 'created', title: 'Smoke Test Suite - v1.2', timestamp: new Date(Date.now() - 24 * 60 * 60 * 1000).toISOString() },
+  ],
+};

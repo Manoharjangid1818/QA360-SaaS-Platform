@@ -1,42 +1,78 @@
-# QA360 - Smart QA Monitoring Tool
+# QA360 — AI-Powered Test Management Platform
 
 ## Overview
-QA360 is a full-stack website testing and monitoring tool. Users can run on-demand QA tests against any URL and get back performance metrics, screenshots, console error logs, and visual regression comparisons.
+QA360 is a full-stack SaaS web application for QA/Test Management built with **Next.js App Router**, **Tailwind CSS**, **Supabase** (auth + database), and **OpenAI** for AI-powered test case generation.
 
-## Architecture
-- **Frontend**: React (Create React App) in `dashboard/` — serves on port 5000 in dev
-- **Backend**: Express.js API in `backend/` — serves on port 3001 in dev
-- **Browser Automation**: Playwright (Chromium headless)
-- **Lighthouse**: Performance/SEO/accessibility scores
-- **Visual Regression**: Pixelmatch + PNGjs for screenshot diffing
-- **Scheduler**: node-cron for recurring test jobs
-- **PDF Reports**: PDFKit
+## Tech Stack
+- **Frontend + Backend**: Next.js 15 (App Router) with TypeScript
+- **Styling**: Tailwind CSS
+- **Database & Auth**: Supabase (optional — app works with mock data if not configured)
+- **AI**: OpenAI via Replit AI Integrations (no API key needed on Replit)
+- **Charts**: Recharts
 
-## Dev Setup
-Both services are started together via `start-dev.sh`:
-- Backend starts on port 3001 (`PORT=3001 node backend/scripts/start.js`)
-- Frontend starts on port 5000 with CRA proxy to backend (`npm start` in `dashboard/`)
+## Features
+1. **Dashboard** — Stats, charts (pie + bar), recent activity, test run history
+2. **Test Cases** — Full CRUD: create, read, update, delete with priority/status filters
+3. **Bug Tracker** — Bug reporting linked to test cases, severity/status management
+4. **AI Generator** — Generate positive, negative, and edge test cases from requirements
+5. **Playwright Integration** — Upload JSON reports, parse results, view suite details
 
-The CRA dev server proxies API calls (`/api/test`, `/scheduler/*`, etc.) to `http://localhost:3001`.
+## Project Structure
+```
+/app
+  /(auth)/login        # Login page
+  /(auth)/register     # Registration page
+  /(dashboard)/
+    dashboard/         # Main dashboard with charts
+    test-cases/        # Test case CRUD
+    bugs/              # Bug tracker
+    ai-generator/      # AI test case generator
+    playwright/        # Playwright report upload
+  /api/
+    ai-generate/       # POST - Generate test cases with OpenAI
+    test-cases/        # GET/POST test cases
+    bugs/              # GET/POST bugs
+    test-runs/         # GET/POST test runs
+/components
+  sidebar.tsx          # Navigation sidebar
+  header.tsx           # Page header with actions
+  stat-card.tsx        # Dashboard stat card
+/lib
+  supabase.ts          # Browser Supabase client
+  supabase-server.ts   # Server Supabase client (Server Components only)
+  openai.ts            # OpenAI client (Replit AI Integrations)
+  mock-data.ts         # Fallback data when Supabase not configured
+  utils.ts             # Utility functions, cn(), formatDate()
+/types/index.ts        # TypeScript interfaces
+middleware.ts          # Auth protection for dashboard routes
+supabase-schema.sql    # Run in Supabase to create tables
+```
 
-## Production Setup
-Build the React app first (`cd dashboard && npm run build`), then start the Express backend which serves the built `dashboard/build` statically alongside the API on port 5000.
+## Environment Variables
+Create `.env.local` (copy from `.env.local.example`):
+```
+NEXT_PUBLIC_SUPABASE_URL=https://your-project.supabase.co
+NEXT_PUBLIC_SUPABASE_ANON_KEY=your-anon-key
+OPENAI_API_KEY=sk-your-key  # Only needed for local dev outside Replit
+```
 
-## Key Files
-- `backend/app.js` — Express app with all API routes
-- `backend/server.js` — HTTP server (defaults port 8080, overridden to 3001 in dev, 5000 in prod)
-- `backend/scripts/start.js` — Startup script that also installs Playwright browser deps on Linux
-- `backend/services/scheduler.js` — Cron-based scheduler logic
-- `backend/utils/saveTestResult.js` — Persist test results for PDF reports
-- `dashboard/src/App.js` — Main React UI
-- `dashboard/package.json` — Frontend deps with `proxy` pointing to `http://localhost:3001`
-- `config/sites.json` — Default sites for scheduled monitoring
-- `start-dev.sh` — Combined dev startup script
+On Replit, `AI_INTEGRATIONS_OPENAI_API_KEY` and `AI_INTEGRATIONS_OPENAI_BASE_URL` are set automatically — no API key management needed.
 
-## Ports
-- Frontend (dev): 5000
-- Backend (dev): 3001
-- Backend (production): 5000 (serves frontend build statically)
+## Supabase Setup (Optional)
+1. Create a project at https://app.supabase.com
+2. Run `supabase-schema.sql` in the SQL Editor
+3. Add your URL and anon key to `.env.local`
+4. Without Supabase, the app runs in mock data mode
 
-## Workflow
-The "Start application" workflow runs `bash start-dev.sh` and waits for port 5000.
+## Running Locally (VS Code)
+```bash
+npm install
+cp .env.local.example .env.local
+# Fill in Supabase keys in .env.local (or leave empty for mock mode)
+npm run dev
+# Open http://localhost:3000
+```
+
+## Development Port
+- Runs on port **5000** in Replit (configured in `package.json` dev script)
+- Runs on port **3000** by default locally (use `npm run dev` without port flag)
