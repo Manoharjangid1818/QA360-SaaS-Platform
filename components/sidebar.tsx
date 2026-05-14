@@ -14,6 +14,7 @@ import {
   ChevronDown,
   FileJson,
   Code2,
+  CalendarClock,
 } from 'lucide-react';
 import { useState, useEffect } from 'react';
 import { cn } from '@/lib/utils';
@@ -31,6 +32,7 @@ const navItems: NavItem[] = [
   { label: 'Test Suite', href: '/test-cases', icon: ClipboardList },
   { label: 'Defect Tracker', href: '/bugs', icon: Bug },
   { label: 'AI Test Writer', href: '/ai-generator', icon: Sparkles },
+  { label: 'Test Scheduler', href: '/schedules', icon: CalendarClock },
   {
     label: 'Automation',
     href: '/playwright',

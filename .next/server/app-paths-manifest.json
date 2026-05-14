@@ -1,6 +1,9 @@
 {
+  "/api/schedules/route": "app/api/schedules/route.js",
+  "/api/queue/jobs/route": "app/api/queue/jobs/route.js",
   "/(dashboard)/dashboard/page": "app/(dashboard)/dashboard/page.js",
   "/(dashboard)/playwright/page": "app/(dashboard)/playwright/page.js",
   "/(dashboard)/ai-generator/page": "app/(dashboard)/ai-generator/page.js",
-  "/(dashboard)/codegen/page": "app/(dashboard)/codegen/page.js"
+  "/(dashboard)/codegen/page": "app/(dashboard)/codegen/page.js",
+  "/(dashboard)/schedules/page": "app/(dashboard)/schedules/page.js"
 }
