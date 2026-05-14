@@ -1,6 +1,6 @@
 {
-  "/api/reports/history/route": "app/api/reports/history/route.js",
-  "/api/reports/schedule/route": "app/api/reports/schedule/route.js",
+  "/api/cicd/route": "app/api/cicd/route.js",
   "/(dashboard)/dashboard/page": "app/(dashboard)/dashboard/page.js",
-  "/(dashboard)/reports/page": "app/(dashboard)/reports/page.js"
+  "/(dashboard)/reports/page": "app/(dashboard)/reports/page.js",
+  "/(dashboard)/ci-cd/page": "app/(dashboard)/ci-cd/page.js"
 }
