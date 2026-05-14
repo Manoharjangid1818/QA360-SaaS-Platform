@@ -11,6 +11,7 @@ import {
   Shield,
   LogOut,
   ChevronRight,
+  Code2,
 } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { createClient, isSupabaseConfigured } from '@/lib/supabase';
@@ -21,6 +22,7 @@ const navItems = [
   { label: 'Bug Tracker', href: '/bugs', icon: Bug },
   { label: 'AI Generator', href: '/ai-generator', icon: Sparkles },
   { label: 'Playwright', href: '/playwright', icon: PlayCircle },
+  { label: 'Code Generator', href: '/codegen', icon: Code2 },
 ];
 
 export default function Sidebar() {

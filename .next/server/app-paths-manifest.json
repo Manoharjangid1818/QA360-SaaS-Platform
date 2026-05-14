@@ -1,6 +1,7 @@
 {
-  "/page": "app/page.js",
+  "/api/codegen/start/route": "app/api/codegen/start/route.js",
   "/(dashboard)/dashboard/page": "app/(dashboard)/dashboard/page.js",
   "/(dashboard)/playwright/page": "app/(dashboard)/playwright/page.js",
-  "/(dashboard)/ai-generator/page": "app/(dashboard)/ai-generator/page.js"
+  "/(dashboard)/ai-generator/page": "app/(dashboard)/ai-generator/page.js",
+  "/(dashboard)/codegen/page": "app/(dashboard)/codegen/page.js"
 }
