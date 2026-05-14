@@ -7,7 +7,7 @@ export type ReportType =
   | 'regression'
   | 'release_readiness';
 
-export type ExportFormat = 'pdf' | 'csv' | 'excel';
+export type ExportFormat = 'excel';
 
 export type ReportFrequency = 'daily' | 'weekly' | 'monthly';
 

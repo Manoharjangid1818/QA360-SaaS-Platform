@@ -1,16 +1,77 @@
 // In-memory store for generated reports and scheduled reports
-// In production, persist to a database
+// Uses file-based persistence for durability
 
 import type { ReportType, ExportFormat, ReportFilters, ScheduledReport, StoredReport } from '@/types/reports';
+import fs from 'fs';
+import path from 'path';
 
 const reportMap = new Map<string, StoredReport>();
 const shareTokenMap = new Map<string, string>(); // token -> id
 const scheduledReports: ScheduledReport[] = [];
 
-// Seed with some demo history
+// Get reports directory
+const REPORTS_DIR = path.join(process.cwd(), '.reports-cache');
+
+function ensureReportsDir() {
+  if (!fs.existsSync(REPORTS_DIR)) {
+    fs.mkdirSync(REPORTS_DIR, { recursive: true });
+  }
+}
+
+function getReportPath(id: string) {
+  return path.join(REPORTS_DIR, `${id}.json`);
+}
+
+function saveReportToFile(report: StoredReport) {
+  ensureReportsDir();
+  const reportData = {
+    id: report.id,
+    name: report.name,
+    type: report.type,
+    format: report.format,
+    filters: report.filters,
+    createdAt: report.createdAt,
+    size: report.size,
+    sizeFormatted: report.sizeFormatted,
+    shareToken: report.shareToken,
+    status: report.status,
+    buffer: report.buffer ? report.buffer.toString('base64') : undefined,
+  };
+  fs.writeFileSync(getReportPath(report.id), JSON.stringify(reportData, null, 2));
+}
+
+function loadReportFromFile(id: string): StoredReport | null {
+  ensureReportsDir();
+  const filePath = getReportPath(id);
+  if (!fs.existsSync(filePath)) return null;
+  try {
+    const data = JSON.parse(fs.readFileSync(filePath, 'utf-8'));
+    return {
+      ...data,
+      buffer: data.buffer ? Buffer.from(data.buffer, 'base64') : undefined,
+    };
+  } catch {
+    return null;
+  }
+}
+
+function loadAllReportsFromFiles() {
+  ensureReportsDir();
+  const files = fs.readdirSync(REPORTS_DIR).filter(f => f.endsWith('.json'));
+  files.forEach(file => {
+    const id = file.replace('.json', '');
+    const report = loadReportFromFile(id);
+    if (report) {
+      reportMap.set(id, report);
+      shareTokenMap.set(report.shareToken, id);
+    }
+  });
+}
+
+
 function seedDemoReports() {
   const types: ReportType[] = ['test_execution', 'bug_summary', 'regression', 'release_readiness', 'performance'];
-  const formats: ExportFormat[] = ['pdf', 'csv', 'excel'];
+  const formats: ExportFormat[] = ['excel'];
   const names = [
     'Q2 Release Regression Report',
     'Sprint 24 Bug Summary',
@@ -44,7 +105,7 @@ function seedDemoReports() {
       id: 'sched-1',
       name: 'Weekly Test Execution Summary',
       type: 'test_execution',
-      format: 'pdf',
+      format: 'excel',
       frequency: 'weekly',
       dayOfWeek: 1,
       time: '08:00',
@@ -73,13 +134,18 @@ function seedDemoReports() {
 
 let seeded = false;
 function ensureSeeded() {
-  if (!seeded) { seedDemoReports(); seeded = true; }
+  if (!seeded) {
+    loadAllReportsFromFiles();
+    seedDemoReports();
+    seeded = true;
+  }
 }
 
 export function storeReport(report: StoredReport): void {
   ensureSeeded();
   reportMap.set(report.id, report);
   shareTokenMap.set(report.shareToken, report.id);
+  saveReportToFile(report);
 }
 
 export function getReport(id: string): StoredReport | undefined {
@@ -107,6 +173,13 @@ export function deleteReport(id: string): boolean {
   if (!report) return false;
   shareTokenMap.delete(report.shareToken);
   reportMap.delete(id);
+  
+  // Delete from file system
+  const filePath = getReportPath(id);
+  if (fs.existsSync(filePath)) {
+    fs.unlinkSync(filePath);
+  }
+  
   return true;
 }
 

@@ -24,8 +24,7 @@ screenshots/
 
 # ─── Generated reports ────────────────────────────────────────────────────────
 reports/
-backend/reports/
-
+backend/reports/.reports-cache/
 # ─── Logs ─────────────────────────────────────────────────────────────────────
 npm-debug.log*
 yarn-debug.log*
