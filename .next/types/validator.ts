@@ -83,6 +83,15 @@ type RouteHandlerConfig<Route extends AppRouteHandlerRoutes = AppRouteHandlerRou
   type __Unused = __Check
 }
 
+// Validate ../../app/(dashboard)/ci-cd/page.tsx
+{
+  type __IsExpected<Specific extends AppPageConfig<"/ci-cd">> = Specific
+  const handler = {} as typeof import("../../app/(dashboard)/ci-cd/page.js")
+  type __Check = __IsExpected<typeof handler>
+  // @ts-ignore
+  type __Unused = __Check
+}
+
 // Validate ../../app/(dashboard)/codegen/page.tsx
 {
   type __IsExpected<Specific extends AppPageConfig<"/codegen">> = Specific
@@ -150,6 +159,78 @@ type RouteHandlerConfig<Route extends AppRouteHandlerRoutes = AppRouteHandlerRou
 {
   type __IsExpected<Specific extends RouteHandlerConfig<"/api/bugs">> = Specific
   const handler = {} as typeof import("../../app/api/bugs/route.js")
+  type __Check = __IsExpected<typeof handler>
+  // @ts-ignore
+  type __Unused = __Check
+}
+
+// Validate ../../app/api/cicd/connect/route.ts
+{
+  type __IsExpected<Specific extends RouteHandlerConfig<"/api/cicd/connect">> = Specific
+  const handler = {} as typeof import("../../app/api/cicd/connect/route.js")
+  type __Check = __IsExpected<typeof handler>
+  // @ts-ignore
+  type __Unused = __Check
+}
+
+// Validate ../../app/api/cicd/disconnect/route.ts
+{
+  type __IsExpected<Specific extends RouteHandlerConfig<"/api/cicd/disconnect">> = Specific
+  const handler = {} as typeof import("../../app/api/cicd/disconnect/route.js")
+  type __Check = __IsExpected<typeof handler>
+  // @ts-ignore
+  type __Unused = __Check
+}
+
+// Validate ../../app/api/cicd/github/route.ts
+{
+  type __IsExpected<Specific extends RouteHandlerConfig<"/api/cicd/github">> = Specific
+  const handler = {} as typeof import("../../app/api/cicd/github/route.js")
+  type __Check = __IsExpected<typeof handler>
+  // @ts-ignore
+  type __Unused = __Check
+}
+
+// Validate ../../app/api/cicd/gitlab/route.ts
+{
+  type __IsExpected<Specific extends RouteHandlerConfig<"/api/cicd/gitlab">> = Specific
+  const handler = {} as typeof import("../../app/api/cicd/gitlab/route.js")
+  type __Check = __IsExpected<typeof handler>
+  // @ts-ignore
+  type __Unused = __Check
+}
+
+// Validate ../../app/api/cicd/jenkins/route.ts
+{
+  type __IsExpected<Specific extends RouteHandlerConfig<"/api/cicd/jenkins">> = Specific
+  const handler = {} as typeof import("../../app/api/cicd/jenkins/route.js")
+  type __Check = __IsExpected<typeof handler>
+  // @ts-ignore
+  type __Unused = __Check
+}
+
+// Validate ../../app/api/cicd/route.ts
+{
+  type __IsExpected<Specific extends RouteHandlerConfig<"/api/cicd">> = Specific
+  const handler = {} as typeof import("../../app/api/cicd/route.js")
+  type __Check = __IsExpected<typeof handler>
+  // @ts-ignore
+  type __Unused = __Check
+}
+
+// Validate ../../app/api/cicd/sync/route.ts
+{
+  type __IsExpected<Specific extends RouteHandlerConfig<"/api/cicd/sync">> = Specific
+  const handler = {} as typeof import("../../app/api/cicd/sync/route.js")
+  type __Check = __IsExpected<typeof handler>
+  // @ts-ignore
+  type __Unused = __Check
+}
+
+// Validate ../../app/api/cicd/webhook/route.ts
+{
+  type __IsExpected<Specific extends RouteHandlerConfig<"/api/cicd/webhook">> = Specific
+  const handler = {} as typeof import("../../app/api/cicd/webhook/route.js")
   type __Check = __IsExpected<typeof handler>
   // @ts-ignore
   type __Unused = __Check
