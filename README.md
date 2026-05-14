@@ -1,70 +1,201 @@
-# QA360 - Smart QA Monitoring Tool
+# QA360 — AI-Powered Test Management Platform
 
-QA360 includes:
-- `dashboard`: React frontend (deploy to Vercel)
-- `backend`: Express API (deploy to Railway)
+A full-stack SaaS platform for QA engineering teams. Generate AI test cases, track bugs, schedule test runs, monitor CI/CD pipelines, and export enterprise-grade reports.
 
-## Local Run
+## Tech Stack
 
-### 1) Backend
+| Layer | Technology |
+|-------|-----------|
+| Frontend | Next.js 15 (App Router), TypeScript, Tailwind CSS |
+| Backend | Express.js, Node.js |
+| Database | Supabase (PostgreSQL) — optional, mock-data mode available |
+| AI | OpenAI GPT-4 (via Replit AI Integration or `OPENAI_API_KEY`) |
+| Testing | Playwright |
+| Charts | Recharts |
+| Exports | PDFKit, xlsx |
+
+## Features
+
+- **Dashboard** — stats, charts, recent activity, test run history
+- **Test Cases** — full CRUD with priority and status filters
+- **Bug Tracker** — bug reporting linked to test cases, severity management
+- **AI Generator** — generate positive, negative, and edge test cases from requirements
+- **Playwright Integration** — upload JSON reports, parse results, view suite details
+- **Reports** — enterprise PDF/CSV/Excel reports with scheduling and branding
+- **CI/CD** — GitHub, GitLab, and Jenkins integration
+- **Scheduler** — cron-based automated test scheduling with Slack/Teams/email notifications
+
+---
+
+## Local Development
+
+### Prerequisites
+
+- Node.js 18+
+- npm 9+
+
+### 1. Clone and install
+
 ```bash
-cd backend
+git clone https://github.com/your-org/qa360.git
+cd qa360
 npm install
-npm start
 ```
 
-Backend runs on `http://localhost:8080`.
+### 2. Configure environment variables
 
-### 2) Dashboard
 ```bash
-cd dashboard
-npm install
+cp .env.local.example .env.local
+# Edit .env.local and fill in your values
 ```
 
-Create `dashboard/.env`:
-```env
-REACT_APP_API_URL=http://localhost:8080
-```
+See `.env.example` for a full description of every available variable.
 
-Then run:
+### 3. Start the Next.js frontend
+
 ```bash
-npm start
+npm run dev:local    # Port 3000 (local development)
+npm run dev          # Port 5000 (Replit)
 ```
 
-Dashboard runs on `http://localhost:3000`.
+Open [http://localhost:3000](http://localhost:3000).
 
-## Deploy
+> The app works **without any environment variables** — it runs in mock-data mode with sample data when Supabase is not configured.
 
-### Vercel (Frontend)
-1. Import this repo in Vercel.
-2. Set Root Directory to `dashboard`.
-3. Framework preset: Create React App.
-4. Build command: `npm run build`
-5. Output directory: `build`
-6. Add env var:
-   - `REACT_APP_API_URL=<your-railway-backend-url>`
+### 4. Start the Express backend (optional)
 
-### Railway (Backend)
-1. Create a new Railway project from this repo.
-2. Railway uses `railway.toml` in repo root and deploys from `backend`.
-3. Service start command is `npm start`.
-4. Confirm health check endpoint: `/health`.
+The Next.js app has its own API routes and works without the Express backend. The backend adds Playwright-based website testing, visual regression, and automated scheduling.
 
-## Notes
-- After Railway deploys, copy its public URL and set it as `REACT_APP_API_URL` in Vercel.
-- Redeploy Vercel after updating environment variables.
+```bash
+npm run backend:dev      # Hot-reload via node --watch
+# or
+cd backend && npm install && npm run dev
+```
 
-## GitHub Actions Auto Deploy
+Backend runs on `http://localhost:8080` by default.
 
-This repo includes `.github/workflows/deploy.yml` to auto deploy on pushes to `main`.
+---
 
-Add these repository secrets in GitHub:
-- `RAILWAY_TOKEN`
-- `RAILWAY_SERVICE_NAME`
-- `VERCEL_TOKEN`
-- `VERCEL_ORG_ID`
-- `VERCEL_PROJECT_ID`
+## Production Deployment
 
-What the workflow does:
-1. Deploys backend to Railway.
-2. Builds and deploys dashboard to Vercel (production).
+### Frontend → Vercel
+
+1. Push your repo to GitHub.
+2. Import the repo in [Vercel](https://vercel.com/new).
+3. Vercel auto-detects Next.js — **no framework config needed**.
+4. Set environment variables in **Vercel → Project → Settings → Environment Variables**:
+
+| Variable | Required | Description |
+|----------|----------|-------------|
+| `NEXT_PUBLIC_SUPABASE_URL` | Recommended | Supabase project URL |
+| `NEXT_PUBLIC_SUPABASE_ANON_KEY` | Recommended | Supabase anon key |
+| `OPENAI_API_KEY` | Yes (AI features) | OpenAI API key from [platform.openai.com](https://platform.openai.com/api-keys) |
+| `NEXT_PUBLIC_BACKEND_URL` | Optional | Your Railway backend URL |
+
+5. Deploy. `vercel.json` at the repo root handles the rest.
+
+> Without Supabase keys the app runs in **mock-data mode** — all features remain usable.
+
+---
+
+### Backend → Railway
+
+1. Create a new project in [Railway](https://railway.app).
+2. Connect the same GitHub repo.
+3. Railway uses `railway.json` at the repo root:
+   - **Build**: Nixpacks
+   - **Start**: `bash start.sh` (installs Chromium system libs, then starts Express)
+   - **Health check**: `GET /health`
+4. Set environment variables in Railway:
+
+| Variable | Required | Description |
+|----------|----------|-------------|
+| `PORT` | Auto-set | Railway injects this automatically |
+| `CORS_ORIGINS` | Yes | Your Vercel URL, e.g. `https://qa360.vercel.app` |
+| `PLAYWRIGHT_CHROMIUM_EXECUTABLE_PATH` | Optional | Custom Chromium binary path |
+| `SMTP_HOST`, `SMTP_USER`, `SMTP_PASS` | Optional | Email notifications |
+
+5. Copy the Railway public URL and set it as `NEXT_PUBLIC_BACKEND_URL` in Vercel.
+
+---
+
+## Supabase Setup (Optional)
+
+1. Create a project at [supabase.com](https://app.supabase.com).
+2. Open the **SQL Editor** and run `supabase-schema.sql`.
+3. Copy your **Project URL** and **anon key** from Project Settings → API.
+4. Add them to `.env.local` (local) or Vercel environment variables (production).
+
+---
+
+## Environment Variables Reference
+
+See `.env.example` for a complete, annotated list of every variable.
+
+---
+
+## Project Structure
+
+```
+/app
+  /(auth)/login          # Login page
+  /(auth)/register       # Registration page
+  /(dashboard)/
+    dashboard/           # Main dashboard with charts
+    test-cases/          # Test case CRUD
+    bugs/                # Bug tracker
+    ai-generator/        # AI test case generator
+    playwright/          # Playwright report upload
+    reports/             # Enterprise reports (PDF/CSV/Excel)
+    schedules/           # Test scheduling
+    cicd/                # CI/CD integration
+  /api/                  # Next.js API routes (serverless on Vercel)
+/backend                 # Express server (Railway deployment)
+  app.js                 # Express app — routes, middleware, error handling
+  server.js              # Entry point — port binding, graceful shutdown
+  services/              # Playwright scheduler, automation
+  scripts/               # Railway start/postinstall scripts
+  utils/                 # Shared backend utilities
+/components              # Shared React components
+/lib                     # Utilities — Supabase client, OpenAI, generators, stores
+/types                   # TypeScript interfaces
+middleware.ts            # Auth middleware (Supabase auth or mock bypass)
+next.config.js           # Next.js configuration
+vercel.json              # Vercel deployment configuration
+railway.json             # Railway deployment configuration
+supabase-schema.sql      # Database schema — run once in Supabase SQL Editor
+.env.example             # All environment variables documented
+.env.local.example       # Template for local development
+```
+
+---
+
+## Scripts Reference
+
+```bash
+# ── Next.js Frontend ─────────────────────────────────────────────────────────
+npm run dev           # Development server on port 5000 (Replit default)
+npm run dev:local     # Development server on port 3000 (local VS Code)
+npm run build         # Production build
+npm run start         # Production server on port 5000
+npm run start:prod    # Production server using $PORT (Vercel/Railway)
+npm run lint          # ESLint
+
+# ── Express Backend ──────────────────────────────────────────────────────────
+npm run backend:dev     # Backend with hot-reload (node --watch)
+npm run backend:start   # Backend production mode
+cd backend && npm run dev    # Same as backend:dev from backend directory
+```
+
+---
+
+## GitHub Actions (Optional)
+
+To enable automatic deployments on push to `main`, add these secrets in **GitHub → Settings → Secrets**:
+
+| Secret | Description |
+|--------|-------------|
+| `RAILWAY_TOKEN` | Railway API token |
+| `VERCEL_TOKEN` | Vercel token |
+| `VERCEL_ORG_ID` | Vercel organization ID |
+| `VERCEL_PROJECT_ID` | Vercel project ID |

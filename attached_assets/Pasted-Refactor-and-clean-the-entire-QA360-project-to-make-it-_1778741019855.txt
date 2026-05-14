@@ -1,0 +1,154 @@
+Refactor and clean the entire QA360 project to make it fully independent from Replit and production-ready for deployment on Vercel and Railway.
+
+Project Stack:
+
+* Frontend: Next.js 15 + React + TypeScript + Tailwind CSS
+* Backend: Express.js + Node.js
+* Database: Supabase PostgreSQL
+* Testing: Playwright
+* Deployment Target:
+
+  * Frontend → Vercel
+  * Backend → Railway
+
+Main Goal:
+Remove all Replit-specific dependencies, configurations, runtime assumptions, and hidden integrations so the application works identically on local development and production deployment.
+
+Requirements:
+
+1. Detect and Remove Replit Dependencies
+   Search the entire project and remove:
+
+* replit packages
+* replit database references
+* replit environment logic
+* replit-specific scripts
+* replit authentication logic
+* replit ports/runtime assumptions
+* .replit
+* replit.nix
+* hidden Replit imports
+* websocket/replit dev hacks
+* vite/replit plugins if present
+
+2. Make Project Fully Standalone
+   Ensure the project works independently with:
+
+* npm install
+* npm run dev
+* npm run build
+* npm start
+
+without requiring Replit runtime.
+
+3. Environment Variables
+   Create proper:
+
+* .env.example
+* frontend env handling
+* backend env handling
+
+Move all secrets/configs into environment variables:
+
+* OpenAI keys
+* Supabase keys
+* Redis URLs
+* API URLs
+* Railway/Vercel configs
+
+4. Frontend Refactor
+   Make frontend fully compatible with Vercel:
+
+* Fix Next.js configuration
+* Remove unsupported server logic
+* Ensure API URLs use environment variables
+* Optimize production builds
+* Fix routing issues
+* Fix static asset handling
+
+5. Backend Refactor
+   Prepare backend for Railway deployment:
+
+* Proper Express server startup
+* Dynamic PORT handling:
+  process.env.PORT
+* Production CORS configuration
+* Secure middleware setup
+* Health check endpoint:
+  /health
+
+6. Deployment Structure
+   Create clean deployment structure:
+
+* /frontend
+* /backend
+
+OR configure monorepo properly.
+
+7. Build Scripts
+   Fix package.json scripts for:
+   Frontend:
+
+* dev
+* build
+* start
+* lint
+
+Backend:
+
+* dev
+* build
+* start
+
+8. Production Readiness
+   Add:
+
+* centralized error handling
+* logging middleware
+* proper async handling
+* graceful server shutdown
+* API timeout handling
+
+9. Deployment Files
+   Generate:
+
+* vercel.json
+* railway.json if needed
+* .gitignore improvements
+* Dockerfile (optional)
+* deployment documentation
+
+10. Testing
+    Verify:
+
+* frontend works locally
+* backend works locally
+* API communication works
+* Supabase connection works
+* Playwright execution works
+* production builds succeed
+
+11. Code Cleanup
+    Remove:
+
+* dead code
+* duplicate configs
+* unused dependencies
+* unused imports
+* temporary hacks
+* console debugging logs
+
+12. Final Deliverables
+    Provide:
+
+* cleaned folder structure
+* deployment steps
+* environment variable guide
+* updated README.md
+* production-ready architecture
+
+Important:
+Do not break existing functionality.
+Ensure the application behaves exactly the same after Replit removal.
+Preserve all current modules and APIs.
+Use scalable production-grade architecture and clean coding standards.

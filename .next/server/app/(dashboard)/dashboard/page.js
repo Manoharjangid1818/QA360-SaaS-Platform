@@ -268,7 +268,7 @@ module.exports = require("next/dist/server/app-render/dynamic-access-async-stora
 
 /***/ }),
 
-/***/ "./work-async-storage.external":
+/***/ "../app-render/work-async-storage.external":
 /*!*****************************************************************************!*\
   !*** external "next/dist/server/app-render/work-async-storage.external.js" ***!
   \*****************************************************************************/
@@ -279,7 +279,7 @@ module.exports = require("next/dist/server/app-render/work-async-storage.externa
 
 /***/ }),
 
-/***/ "./work-unit-async-storage.external":
+/***/ "../app-render/work-unit-async-storage.external":
 /*!**********************************************************************************!*\
   !*** external "next/dist/server/app-render/work-unit-async-storage.external.js" ***!
   \**********************************************************************************/
@@ -374,7 +374,7 @@ module.exports = require("util");
 var __webpack_require__ = require("../../../webpack-runtime.js");
 __webpack_require__.C(exports);
 var __webpack_exec__ = (moduleId) => (__webpack_require__(__webpack_require__.s = moduleId))
-var __webpack_exports__ = __webpack_require__.X(0, ["vendor-chunks/next","vendor-chunks/@supabase","vendor-chunks/recharts","vendor-chunks/lodash","vendor-chunks/tailwind-merge","vendor-chunks/d3-shape","vendor-chunks/react-smooth","vendor-chunks/decimal.js-light","vendor-chunks/lucide-react","vendor-chunks/prop-types","vendor-chunks/d3-scale","vendor-chunks/react-transition-group","vendor-chunks/fast-equals","vendor-chunks/d3-time-format","vendor-chunks/recharts-scale","vendor-chunks/tslib","vendor-chunks/iceberg-js","vendor-chunks/d3-time","vendor-chunks/d3-format","vendor-chunks/d3-array","vendor-chunks/d3-color","vendor-chunks/eventemitter3","vendor-chunks/cookie","vendor-chunks/d3-interpolate","vendor-chunks/react-is","vendor-chunks/d3-path","vendor-chunks/object-assign","vendor-chunks/@swc","vendor-chunks/internmap","vendor-chunks/@babel","vendor-chunks/victory-vendor","vendor-chunks/tiny-invariant","vendor-chunks/clsx"], () => (__webpack_exec__("(rsc)/./node_modules/next/dist/build/webpack/loaders/next-app-loader/index.js?name=app%2F(dashboard)%2Fdashboard%2Fpage&page=%2F(dashboard)%2Fdashboard%2Fpage&appPaths=%2F(dashboard)%2Fdashboard%2Fpage&pagePath=private-next-app-dir%2F(dashboard)%2Fdashboard%2Fpage.tsx&appDir=%2Fhome%2Frunner%2Fworkspace%2Fapp&pageExtensions=tsx&pageExtensions=ts&pageExtensions=jsx&pageExtensions=js&rootDir=%2Fhome%2Frunner%2Fworkspace&isDev=true&tsconfigPath=tsconfig.json&basePath=&assetPrefix=&nextConfigOutput=&preferredRegion=&middlewareConfig=e30%3D&isGlobalNotFoundEnabled=!")));
+var __webpack_exports__ = __webpack_require__.X(0, ["vendor-chunks/next","vendor-chunks/lodash","vendor-chunks/recharts","vendor-chunks/d3-shape","vendor-chunks/@supabase","vendor-chunks/d3-scale","vendor-chunks/lucide-react","vendor-chunks/d3-array","vendor-chunks/d3-format","vendor-chunks/d3-interpolate","vendor-chunks/d3-time","vendor-chunks/react-smooth","vendor-chunks/react-transition-group","vendor-chunks/prop-types","vendor-chunks/@babel","vendor-chunks/@swc","vendor-chunks/recharts-scale","vendor-chunks/d3-time-format","vendor-chunks/d3-color","vendor-chunks/victory-vendor","vendor-chunks/react-is","vendor-chunks/tslib","vendor-chunks/tiny-invariant","vendor-chunks/tailwind-merge","vendor-chunks/internmap","vendor-chunks/iceberg-js","vendor-chunks/fast-equals","vendor-chunks/decimal.js-light","vendor-chunks/d3-path","vendor-chunks/clsx","vendor-chunks/object-assign","vendor-chunks/eventemitter3","vendor-chunks/cookie"], () => (__webpack_exec__("(rsc)/./node_modules/next/dist/build/webpack/loaders/next-app-loader/index.js?name=app%2F(dashboard)%2Fdashboard%2Fpage&page=%2F(dashboard)%2Fdashboard%2Fpage&appPaths=%2F(dashboard)%2Fdashboard%2Fpage&pagePath=private-next-app-dir%2F(dashboard)%2Fdashboard%2Fpage.tsx&appDir=%2Fhome%2Frunner%2Fworkspace%2Fapp&pageExtensions=tsx&pageExtensions=ts&pageExtensions=jsx&pageExtensions=js&rootDir=%2Fhome%2Frunner%2Fworkspace&isDev=true&tsconfigPath=tsconfig.json&basePath=&assetPrefix=&nextConfigOutput=&preferredRegion=&middlewareConfig=e30%3D&isGlobalNotFoundEnabled=!")));
 module.exports = __webpack_exports__;
 
 })();

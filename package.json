@@ -4,9 +4,13 @@
   "private": true,
   "scripts": {
     "dev": "next dev -p 5000",
+    "dev:local": "next dev -p 3000",
     "build": "next build",
     "start": "next start -p 5000",
-    "lint": "next lint"
+    "start:prod": "next start",
+    "lint": "next lint",
+    "backend:dev": "cd backend && node --watch server.js",
+    "backend:start": "cd backend && node server.js"
   },
   "dependencies": {
     "@monaco-editor/react": "^4.7.0",

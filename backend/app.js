@@ -58,10 +58,21 @@ app.use(
   })
 );
 
-app.use(express.static('../dashboard/build'));
+// Request logger
+app.use((req, _res, next) => {
+  console.log(`[${new Date().toISOString()}] ${req.method} ${req.path}`);
+  next();
+});
+
+// Serve legacy React dashboard build if it exists (optional)
+const dashboardBuildPath = path.join(__dirname, '../dashboard/build');
+const fs_sync = require('fs');
+if (fs_sync.existsSync(dashboardBuildPath)) {
+  app.use(express.static(dashboardBuildPath));
+}
 
 app.get("/", (_req, res) => {
-  res.send("QA360 backend is running at / but frontend served from /");
+  res.json({ name: "QA360 Backend", status: "running", version: "1.0.0" });
 });
 
 
@@ -464,6 +475,20 @@ app.get('/report/pdf', async (req, res) => {
     console.error('PDF generation error:', error);
     res.status(500).json({ error: 'Failed to generate PDF' });
   }
+});
+
+// 404 handler — must come after all routes
+app.use((_req, res) => {
+  res.status(404).json({ error: "Not found" });
+});
+
+// Centralized error handler — must be last middleware (4 args)
+// eslint-disable-next-line no-unused-vars
+app.use((err, _req, res, _next) => {
+  const status = err.status || err.statusCode || 500;
+  const message = err.message || "Internal server error";
+  console.error(`[Error] ${status} — ${message}`);
+  res.status(status).json({ error: message });
 });
 
 module.exports = app;
