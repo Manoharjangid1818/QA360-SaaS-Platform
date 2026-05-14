@@ -16,6 +16,7 @@ import {
   Code2,
   CalendarClock,
   GitMerge,
+  BarChart2,
 } from 'lucide-react';
 import { useState, useEffect } from 'react';
 import { cn } from '@/lib/utils';
@@ -35,6 +36,7 @@ const navItems: NavItem[] = [
   { label: 'AI Test Writer', href: '/ai-generator', icon: Sparkles },
   { label: 'Test Scheduler', href: '/schedules', icon: CalendarClock },
   { label: 'CI/CD', href: '/ci-cd', icon: GitMerge },
+  { label: 'Reports', href: '/reports', icon: BarChart2 },
   {
     label: 'Automation',
     href: '/playwright',
