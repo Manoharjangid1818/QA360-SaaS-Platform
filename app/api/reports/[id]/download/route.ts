@@ -3,20 +3,13 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { getReport } from '@/lib/report-store';
 import type { ReportType, ExportFormat } from '@/types/reports';
-import { generatePDF } from '@/lib/pdf-generator';
-import { generateCSV } from '@/lib/csv-generator';
 import { generateExcel } from '@/lib/excel-generator';
-import { DEFAULT_BRANDING } from '@/types/reports';
 
 const MIME: Record<ExportFormat, string> = {
-  pdf: 'application/pdf',
-  csv: 'text/csv',
   excel: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
 };
 
 const EXT: Record<ExportFormat, string> = {
-  pdf: 'pdf',
-  csv: 'csv',
   excel: 'xlsx',
 };
 
@@ -45,13 +38,7 @@ export async function GET(
     buffer = report.buffer;
   } else {
     // Demo reports don't have buffers; regenerate on the fly
-    if (report.format === 'pdf') {
-      buffer = await generatePDF(report.type, report.filters, DEFAULT_BRANDING);
-    } else if (report.format === 'csv') {
-      buffer = generateCSV(report.type, report.filters);
-    } else {
-      buffer = generateExcel(report.type, report.filters);
-    }
+    buffer = generateExcel(report.type, report.filters);
   }
 
   const filename = `qa360-${REPORT_NAMES[report.type]}-${new Date(report.createdAt).toISOString().split('T')[0]}.${EXT[report.format]}`;

@@ -4,10 +4,8 @@ const nextConfig = {
   // It is ignored in production builds (Vercel, Railway, etc.).
   ...(process.env.NODE_ENV !== 'production' && {
     allowedDevOrigins: [
-      '*.replit.dev',
-      '*.repl.co',
-      '*.pike.replit.dev',
-      '*.worf.replit.dev',
+      '*.pike.dev',
+      '*.railway.dev',
       'localhost',
       '127.0.0.1',
     ],

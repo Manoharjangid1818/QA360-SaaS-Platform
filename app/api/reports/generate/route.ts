@@ -4,8 +4,6 @@
 import { NextRequest, NextResponse } from 'next/server';
 import type { ReportType, ExportFormat, ReportFilters, BrandingSettings } from '@/types/reports';
 import { DEFAULT_BRANDING } from '@/types/reports';
-import { generatePDF } from '@/lib/pdf-generator';
-import { generateCSV } from '@/lib/csv-generator';
 import { generateExcel } from '@/lib/excel-generator';
 import { storeReport } from '@/lib/report-store';
 
@@ -22,7 +20,7 @@ export async function POST(req: NextRequest) {
     const body = await req.json();
     const {
       type = 'test_execution',
-      format = 'pdf',
+      format = 'excel',
       filters = {},
       branding = DEFAULT_BRANDING,
       customName,
@@ -36,13 +34,10 @@ export async function POST(req: NextRequest) {
 
     let buffer: Buffer;
 
-    if (format === 'pdf') {
-      buffer = await generatePDF(type, filters, { ...DEFAULT_BRANDING, ...branding });
-    } else if (format === 'csv') {
-      buffer = generateCSV(type, filters);
-    } else {
-      buffer = generateExcel(type, filters);
+    if (format !== 'excel') {
+      return NextResponse.json({ error: 'Only Excel format is supported.' }, { status: 400 });
     }
+    buffer = generateExcel(type, filters);
 
     const id = `report-${Date.now()}-${Math.random().toString(36).slice(2, 7)}`;
     const shareToken = `share-${id}-${Math.random().toString(36).slice(2)}`;
@@ -76,6 +71,7 @@ export async function POST(req: NextRequest) {
         createdAt: report.createdAt,
         sizeFormatted: report.sizeFormatted,
         shareToken: report.shareToken,
+        status: report.status,
         downloadUrl: `/api/reports/${report.id}/download`,
         shareUrl: `/reports/share/${report.shareToken}`,
       },

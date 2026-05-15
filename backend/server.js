@@ -1,6 +1,6 @@
 const app = require("./app");
 
-const PORT = process.env.PORT || 8080;
+const PORT = process.env.PORT || 3001;
 
 function startServer(port = PORT) {
   const server = app.listen(port, () => {

@@ -9,7 +9,7 @@ A full-stack SaaS platform for QA engineering teams. Generate AI test cases, tra
 | Frontend | Next.js 15 (App Router), TypeScript, Tailwind CSS |
 | Backend | Express.js, Node.js |
 | Database | Supabase (PostgreSQL) — optional, mock-data mode available |
-| AI | OpenAI GPT-4 (via Replit AI Integration or `OPENAI_API_KEY`) |
+| AI | OpenAI GPT-4 (via `OPENAI_API_KEY`) |
 | Testing | Playwright |
 | Charts | Recharts |
 | Exports | PDFKit, xlsx |
@@ -51,80 +51,54 @@ cp .env.local.example .env.local
 
 See `.env.example` for a full description of every available variable.
 
-### 3. Start the Next.js frontend
+### 3. Start the React frontend
 
 ```bash
-npm run dev:local    # Port 3000 (local development)
-npm run dev          # Port 5000 (Replit)
+cd dashboard
+npm start    # Runs on http://localhost:3000
 ```
 
-Open [http://localhost:3000](http://localhost:3000).
+Open [http://localhost:3000](http://localhost:3000) in your browser.
 
-> The app works **without any environment variables** — it runs in mock-data mode with sample data when Supabase is not configured.
+### 4. Start the Express backend
 
-### 4. Start the Express backend (optional)
-
-The Next.js app has its own API routes and works without the Express backend. The backend adds Playwright-based website testing, visual regression, and automated scheduling.
+The Express backend provides Playwright-based website testing, visual regression, and automated scheduling.
 
 ```bash
-npm run backend:dev      # Hot-reload via node --watch
-# or
-cd backend && npm install && npm run dev
+cd backend
+npm install
+npm run dev      # Hot-reload via node --watch
 ```
 
-Backend runs on `http://localhost:8080` by default.
+Backend runs on `http://localhost:3001` by default (see `backend/.env` for configuration).
 
 ---
 
 ## Production Deployment
 
-### Frontend → Vercel
+**For complete step-by-step deployment instructions with troubleshooting, see [README_DEPLOYMENT.md](README_DEPLOYMENT.md)**
 
-1. Push your repo to GitHub.
-2. Import the repo in [Vercel](https://vercel.com/new).
-3. Vercel auto-detects Next.js — **no framework config needed**.
-4. Set environment variables in **Vercel → Project → Settings → Environment Variables**:
+### Quick Summary
 
-| Variable | Required | Description |
-|----------|----------|-------------|
-| `NEXT_PUBLIC_SUPABASE_URL` | Recommended | Supabase project URL |
-| `NEXT_PUBLIC_SUPABASE_ANON_KEY` | Recommended | Supabase anon key |
-| `OPENAI_API_KEY` | Yes (AI features) | OpenAI API key from [platform.openai.com](https://platform.openai.com/api-keys) |
-| `NEXT_PUBLIC_BACKEND_URL` | Optional | Your Railway backend URL |
+#### Frontend (React CRA) → Vercel
 
-5. Deploy. `vercel.json` at the repo root handles the rest.
+1. Push your repo to GitHub
+2. Import `dashboard/` folder in [Vercel](https://vercel.com/new)
+3. Set environment variable: `REACT_APP_API_URL=https://your-railway-backend.app`
+4. Deploy
 
-> Without Supabase keys the app runs in **mock-data mode** — all features remain usable.
+#### Backend (Express) → Railway
 
----
+1. Create project in [Railway](https://railway.app)
+2. Connect GitHub repo, point to `backend/` directory
+3. Set required environment variables (see [README_DEPLOYMENT.md](README_DEPLOYMENT.md))
+4. Deploy
 
-### Backend → Railway
+#### Database → Supabase
 
-1. Create a new project in [Railway](https://railway.app).
-2. Connect the same GitHub repo.
-3. Railway uses `railway.json` at the repo root:
-   - **Build**: Nixpacks
-   - **Start**: `bash start.sh` (installs Chromium system libs, then starts Express)
-   - **Health check**: `GET /health`
-4. Set environment variables in Railway:
-
-| Variable | Required | Description |
-|----------|----------|-------------|
-| `PORT` | Auto-set | Railway injects this automatically |
-| `CORS_ORIGINS` | Yes | Your Vercel URL, e.g. `https://qa360.vercel.app` |
-| `PLAYWRIGHT_CHROMIUM_EXECUTABLE_PATH` | Optional | Custom Chromium binary path |
-| `SMTP_HOST`, `SMTP_USER`, `SMTP_PASS` | Optional | Email notifications |
-
-5. Copy the Railway public URL and set it as `NEXT_PUBLIC_BACKEND_URL` in Vercel.
-
----
-
-## Supabase Setup (Optional)
-
-1. Create a project at [supabase.com](https://app.supabase.com).
-2. Open the **SQL Editor** and run `supabase-schema.sql`.
-3. Copy your **Project URL** and **anon key** from Project Settings → API.
-4. Add them to `.env.local` (local) or Vercel environment variables (production).
+1. Create project at [supabase.com](https://app.supabase.com)
+2. Get API keys from Project Settings → API
+3. Set in backend environment variables
 
 ---
 
@@ -137,54 +111,46 @@ See `.env.example` for a complete, annotated list of every variable.
 ## Project Structure
 
 ```
-/app
-  /(auth)/login          # Login page
-  /(auth)/register       # Registration page
-  /(dashboard)/
-    dashboard/           # Main dashboard with charts
-    test-cases/          # Test case CRUD
-    bugs/                # Bug tracker
-    ai-generator/        # AI test case generator
-    playwright/          # Playwright report upload
-    reports/             # Enterprise reports (PDF/CSV/Excel)
-    schedules/           # Test scheduling
-    cicd/                # CI/CD integration
-  /api/                  # Next.js API routes (serverless on Vercel)
-/backend                 # Express server (Railway deployment)
-  app.js                 # Express app — routes, middleware, error handling
-  server.js              # Entry point — port binding, graceful shutdown
-  services/              # Playwright scheduler, automation
-  scripts/               # Railway start/postinstall scripts
-  utils/                 # Shared backend utilities
-/components              # Shared React components
-/lib                     # Utilities — Supabase client, OpenAI, generators, stores
-/types                   # TypeScript interfaces
-middleware.ts            # Auth middleware (Supabase auth or mock bypass)
-next.config.js           # Next.js configuration
-vercel.json              # Vercel deployment configuration
-railway.json             # Railway deployment configuration
-supabase-schema.sql      # Database schema — run once in Supabase SQL Editor
-.env.example             # All environment variables documented
-.env.local.example       # Template for local development
+/dashboard              # React CRA Frontend (Deploy to Vercel)
+  src/
+    App.js              # Main app component
+  public/
+  package.json
+  .env.example          # Copy to .env.local
+
+/backend                # Express Backend (Deploy to Railway)
+  app.js                # Express app — routes, middleware, error handling
+  server.js             # Entry point — port binding, graceful shutdown
+  services/             # Playwright scheduler, automation
+  utils/                # Shared utilities
+  package.json
+  .env.example          # Copy to .env
+
+/lib                    # Shared utilities
+/types                  # TypeScript types
+.env.example            # Root environment variables
+README_DEPLOYMENT.md    # Production deployment guide
+supabase-schema.sql     # Database schema (optional)
 ```
 
 ---
 
 ## Scripts Reference
 
+### React CRA Frontend (dashboard/)
 ```bash
-# ── Next.js Frontend ─────────────────────────────────────────────────────────
-npm run dev           # Development server on port 5000 (Replit default)
-npm run dev:local     # Development server on port 3000 (local VS Code)
-npm run build         # Production build
-npm run start         # Production server on port 5000
-npm run start:prod    # Production server using $PORT (Vercel/Railway)
-npm run lint          # ESLint
+npm install      # Install dependencies
+npm start        # Development server (port 3000)
+npm run build    # Production build
+npm run test     # Run tests
+```
 
-# ── Express Backend ──────────────────────────────────────────────────────────
-npm run backend:dev     # Backend with hot-reload (node --watch)
-npm run backend:start   # Backend production mode
-cd backend && npm run dev    # Same as backend:dev from backend directory
+### Express Backend (backend/)
+```bash
+npm install      # Install dependencies (triggers Playwright install)
+npm run dev      # Development server with hot-reload (port 3001)
+npm start        # Production server
+npm run build    # Build if applicable
 ```
 
 ---

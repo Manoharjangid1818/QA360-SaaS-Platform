@@ -11,18 +11,16 @@ import type { InteractiveElement } from '@/types/codegen';
 // ── Resolve Chromium executable at module load time ──────────────────────────
 
 function resolveChromiumPath(): string | undefined {
-  // 1. Playwright-bundled Chromium (Nix store, installed via replit.nix pkgs.playwright-browsers)
-  const pwBrowsersPath =
-    process.env.PLAYWRIGHT_BROWSERS_PATH ||
-    '/nix/store/0n9rl5l9syy808xi9bk4f6dhnfrvhkww-playwright-browsers-chromium';
+  // 1. Use custom path if provided via environment variable
+  const customPath = process.env.PLAYWRIGHT_CHROMIUM_EXECUTABLE_PATH;
+  if (customPath) {
+    try {
+      const { existsSync } = require('fs') as typeof import('fs');
+      if (existsSync(customPath)) return customPath;
+    } catch {}
+  }
 
-  const playwrightChromium = `${pwBrowsersPath}/chromium-1080/chrome-linux/chrome`;
-  try {
-    const { existsSync } = require('fs') as typeof import('fs');
-    if (existsSync(playwrightChromium)) return playwrightChromium;
-  } catch {}
-
-  // 2. System chromium (from replit.nix pkgs.chromium)
+  // 2. Use system chromium
   try {
     const path = execSync('which chromium-browser 2>/dev/null || which chromium 2>/dev/null', {
       timeout: 3000,

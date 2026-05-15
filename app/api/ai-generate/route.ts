@@ -1,7 +1,6 @@
 // API route: POST /api/ai-generate
 // Generates test cases from a requirement using OpenAI
-// Uses Replit AI Integrations on Replit (no API key needed)
-// Uses OPENAI_API_KEY for local development
+// Requires OPENAI_API_KEY in environment variables
 
 import { NextRequest, NextResponse } from 'next/server';
 import { getOpenAIClient } from '@/lib/openai';

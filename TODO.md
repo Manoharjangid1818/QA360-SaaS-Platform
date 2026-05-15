@@ -1,21 +1,58 @@
-# QA360 Enhancement TODO
+# QA360 Production Deployment Refactor — TODO
 
-## Approved Plan Steps
+## ✅ 1) Remove Replit dependencies
+- [x] Delete: .replit
+- [x] Delete: replit.nix
+- [x] Delete: replit.md
+- [x] Delete: .replit_integration_files/
+- [x] Remove Replit references from .env.example
+- [x] Remove Replit references from .env.local.example
+- [x] Update next.config.js to remove Replit domains
 
-### 1. Update Dependencies ✅ (npm install complete)
+## ✅ 2) Frontend (dashboard / CRA)
+- [x] Remove proxy from dashboard/package.json
+- [x] Remove cross-env from scripts and dependencies
+- [x] Verify all API calls use REACT_APP_API_URL
+- [x] Create dashboard/.env.example with REACT_APP_API_URL=http://localhost:3001
 
-### 2. Backend Implementation
-- [✅] Create classifyError function in backend/app.js
-- [✅] Integrate classifyError into console handler + return classifiedErrors (complete: vars, handlers, JSON)
+## ✅ 3) Backend (Express)
+- [x] Verify backend/server.js uses process.env.PORT || 3001
+- [x] Verify CORS configured with environment variables
+- [x] Verify GET /health endpoint exists
+- [x] Verify centralized error handling in place
 
-### Next Steps
-- [ ] Add visual regression logic (pixelmatch after screenshot)
-- [ ] Add Lighthouse /test/lighthouse endpoint
-- [ ] Update saveTestResult.js for baseline/current/diff storage
-### 3. Playwright Config
-- [ ] Update for visual testing
-### 4. Frontend Updates
-- [ ] UI for Lighthouse scores, visual diff viewer, grouped errors
-### 5. Scheduler Integration
-### 6. Testing & Demo
+## ✅ 4) Playwright Railway compatibility
+- [x] Verify backend/package.json has postinstall "playwright install --with-deps"
 
+## ✅ 5) Environment variables
+- [x] Create backend/.env.example with all required keys
+- [x] Update dashboard/.env.example
+
+## ✅ 6) Production scripts
+- [x] Verify dashboard build script: react-scripts build
+- [x] Verify backend start script: node server.js
+
+## ✅ 7) Deployment documentation
+- [x] Create README_DEPLOYMENT.md with complete Vercel + Railway deployment guide
+- [x] Update main README.md to reference deployment guide
+- [x] Remove Replit references from README.md
+
+## ⏳ 8) Cleanup
+- [ ] Review and remove any dead code
+- [ ] Review and remove debug console.log statements
+- [ ] Remove unused imports
+- [ ] Remove duplicate configurations
+
+## ⏳ 9) Local Testing & Verification
+- [ ] npm install in dashboard/ and backend/
+- [ ] npm start in dashboard/ (verify port 3000)
+- [ ] npm run dev in backend/ (verify port 3001)
+- [ ] Test API connectivity from frontend to backend
+- [ ] Verify core features work end-to-end
+
+## ⏳ 10) Production Verification
+- [ ] Dashboard deploys to Vercel
+- [ ] Backend deploys to Railway
+- [ ] Health endpoint responds
+- [ ] Frontend-backend CORS working
+- [ ] Playwright tests execute in Railway container

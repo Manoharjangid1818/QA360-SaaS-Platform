@@ -45,8 +45,6 @@ const REPORT_TYPES: {
 ];
 
 const FORMAT_OPTS: { fmt: ExportFormat; label: string; ext: string; bg: string }[] = [
-  { fmt: 'pdf', label: 'PDF', ext: '.pdf', bg: 'bg-red-500' },
-  { fmt: 'csv', label: 'CSV', ext: '.csv', bg: 'bg-green-500' },
   { fmt: 'excel', label: 'Excel', ext: '.xlsx', bg: 'bg-emerald-600' },
 ];
 
@@ -114,7 +112,7 @@ const EXEC_HISTORY = [
 export default function ReportsPage() {
   const [tab, setTab] = useState<Tab>('builder');
   const [selectedType, setSelectedType] = useState<ReportType>('test_execution');
-  const [selectedFormat, setSelectedFormat] = useState<ExportFormat>('pdf');
+  const [selectedFormat, setSelectedFormat] = useState<ExportFormat>('excel');
   const [filters, setFilters] = useState<ReportFilters>({ environment: 'production', project: 'QA360', severity: 'all' });
   const [branding, setBranding] = useState<BrandingSettings>(DEFAULT_BRANDING);
   const [generating, setGenerating] = useState(false);
@@ -123,7 +121,7 @@ export default function ReportsPage() {
   const [loadingHistory, setLoadingHistory] = useState(false);
   const [copiedToken, setCopiedToken] = useState<string | null>(null);
   const [newSchedule, setNewSchedule] = useState<Partial<ScheduledReport>>({
-    name: '', type: 'test_execution', format: 'pdf', frequency: 'weekly', time: '08:00', recipients: [], active: true,
+    name: '', type: 'test_execution', format: 'excel', frequency: 'weekly', time: '08:00', recipients: [], active: true,
   });
   const [recipientInput, setRecipientInput] = useState('');
   const [scheduleSuccess, setScheduleSuccess] = useState(false);
@@ -561,7 +559,7 @@ export default function ReportsPage() {
                               {r.status === 'completed' && <CheckCircle className="h-3.5 w-3.5" />}
                               {r.status === 'generating' && <RefreshCw className="h-3.5 w-3.5 animate-spin" />}
                               {r.status === 'failed' && <XCircle className="h-3.5 w-3.5" />}
-                              {r.status.charAt(0).toUpperCase() + r.status.slice(1)}
+                              {(r.status || 'completed').charAt(0).toUpperCase() + (r.status || 'completed').slice(1)}
                             </span>
                           </td>
                           <td className="px-5 py-3.5">
