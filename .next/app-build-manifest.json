@@ -1,14 +1,9 @@
 {
   "pages": {
-    "/api/schedules/route": [
+    "/api/reports/history/route": [
       "static/chunks/webpack.js",
       "static/chunks/main-app.js",
-      "static/chunks/app/api/schedules/route.js"
-    ],
-    "/api/queue/jobs/route": [
-      "static/chunks/webpack.js",
-      "static/chunks/main-app.js",
-      "static/chunks/app/api/queue/jobs/route.js"
+      "static/chunks/app/api/reports/history/route.js"
     ],
     "/layout": [
       "static/chunks/webpack.js",
@@ -25,6 +20,26 @@
       "static/chunks/webpack.js",
       "static/chunks/main-app.js",
       "static/chunks/app/(dashboard)/dashboard/page.js"
+    ],
+    "/(dashboard)/reports/page": [
+      "static/chunks/webpack.js",
+      "static/chunks/main-app.js",
+      "static/chunks/app/(dashboard)/reports/page.js"
+    ],
+    "/api/reports/schedule/route": [
+      "static/chunks/webpack.js",
+      "static/chunks/main-app.js",
+      "static/chunks/app/api/reports/schedule/route.js"
+    ],
+    "/api/reports/generate/route": [
+      "static/chunks/webpack.js",
+      "static/chunks/main-app.js",
+      "static/chunks/app/api/reports/generate/route.js"
+    ],
+    "/api/reports/[id]/download/route": [
+      "static/chunks/webpack.js",
+      "static/chunks/main-app.js",
+      "static/chunks/app/api/reports/[id]/download/route.js"
     ]
   }
 }

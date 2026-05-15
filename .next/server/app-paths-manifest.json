@@ -1,5 +1,8 @@
 {
-  "/api/schedules/route": "app/api/schedules/route.js",
-  "/api/queue/jobs/route": "app/api/queue/jobs/route.js",
-  "/(dashboard)/dashboard/page": "app/(dashboard)/dashboard/page.js"
+  "/api/reports/history/route": "app/api/reports/history/route.js",
+  "/api/reports/schedule/route": "app/api/reports/schedule/route.js",
+  "/api/reports/generate/route": "app/api/reports/generate/route.js",
+  "/api/reports/[id]/download/route": "app/api/reports/[id]/download/route.js",
+  "/(dashboard)/dashboard/page": "app/(dashboard)/dashboard/page.js",
+  "/(dashboard)/reports/page": "app/(dashboard)/reports/page.js"
 }
