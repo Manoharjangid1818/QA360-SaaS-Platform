@@ -11,11 +11,15 @@ jobs:
   docker-build-test:
     name: Build and Test Docker Image
     runs-on: ubuntu-latest
-    
+
+    env:
+      # GHCR repository names must be lowercase.
+      REPO_LOWER: ${{ github.repository_owner }}/QA360-SaaS-Platform
+
     permissions:
       contents: read
       packages: write
-    
+
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
@@ -30,8 +34,8 @@ jobs:
           push: false
           load: true
           tags: qa360-framework:test
-          cache-from: type=registry,ref=ghcr.io/${{ github.repository }}:buildcache
-          cache-to: type=registry,ref=ghcr.io/${{ github.repository }}:buildcache,mode=max
+          cache-from: type=registry,ref=ghcr.io/${{ env.REPO_LOWER }}:buildcache
+          cache-to: type=registry,ref=ghcr.io/${{ env.REPO_LOWER }}:buildcache,mode=max
       
       - name: Run tests in container
         run: |
@@ -59,8 +63,8 @@ jobs:
           context: .
           push: true
           tags: |
-            ghcr.io/${{ github.repository }}:latest
-            ghcr.io/${{ github.repository }}:${{ github.sha }}
+            ghcr.io/${{ env.REPO_LOWER }}:latest
+            ghcr.io/${{ env.REPO_LOWER }}:${{ github.sha }}
           labels: |
             org.opencontainers.image.description=${{ github.event.repository.description }}
             org.opencontainers.image.url=${{ github.event.repository.html_url }}
