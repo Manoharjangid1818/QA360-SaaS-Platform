@@ -1,0 +1,68 @@
+name: Docker Build & Test
+
+on:
+  push:
+    branches: [ main, develop ]
+  pull_request:
+    branches: [ main, develop ]
+  workflow_dispatch:
+
+jobs:
+  docker-build-test:
+    name: Build and Test Docker Image
+    runs-on: ubuntu-latest
+    
+    permissions:
+      contents: read
+      packages: write
+    
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+      
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v3
+      
+      - name: Build Docker image
+        uses: docker/build-push-action@v5
+        with:
+          context: .
+          push: false
+          load: true
+          tags: qa360-framework:test
+          cache-from: type=registry,ref=ghcr.io/${{ github.repository }}:buildcache
+          cache-to: type=registry,ref=ghcr.io/${{ github.repository }}:buildcache,mode=max
+      
+      - name: Run tests in container
+        run: |
+          docker run --rm \
+            -e TEST_URL=http://localhost:3000 \
+            -e CI=true \
+            -v ${{ github.workspace }}/test-results:/app/test-results \
+            -v ${{ github.workspace }}/allure-report:/app/allure-report \
+            qa360-framework:test
+      
+      - name: Upload container test results
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: docker-test-results
+          path: |
+            test-results/
+            allure-report/
+          retention-days: 30
+      
+      - name: Push image to registry
+        if: success() && github.event_name == 'push'
+        uses: docker/build-push-action@v5
+        with:
+          context: .
+          push: true
+          tags: |
+            ghcr.io/${{ github.repository }}:latest
+            ghcr.io/${{ github.repository }}:${{ github.sha }}
+          labels: |
+            org.opencontainers.image.description=${{ github.event.repository.description }}
+            org.opencontainers.image.url=${{ github.event.repository.html_url }}
+            org.opencontainers.image.source=${{ github.event.repository.clone_url }}
+            org.opencontainers.image.revision=${{ github.sha }}

@@ -1,0 +1,63 @@
+# Dependencies
+node_modules/
+
+# Git
+.git
+.gitignore
+
+# IDEs
+.vscode
+.idea
+*.swp
+*.swo
+*~
+.DS_Store
+
+# Build and reports
+build/
+dist/
+.next/
+playwright-report/
+allure-report/
+allure-results/
+test-results/
+coverage/
+
+# Logs and temp files
+*.log
+logs/
+tmp/
+temp/
+
+# Environment files
+.env
+.env.local
+.env.*.local
+
+# Test artifacts
+screenshots/
+videos/
+traces/
+
+# OS specific
+Thumbs.db
+.DS_Store
+
+# GitHub
+.github/workflows
+
+# Documentation
+docs/
+*.md
+
+# CI/CD
+.github
+.gitlab-ci.yml
+.circleci
+Jenkinsfile
+
+# Node
+npm-debug.log
+yarn-error.log
+package-lock.json
+yarn.lock

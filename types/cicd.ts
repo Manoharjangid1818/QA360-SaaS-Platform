@@ -167,6 +167,8 @@ export interface ConnectInput {
   repo?: string;
   url?: string;
   username?: string;
+  /** Jenkins-only: optional job name filter */
+  jobName?: string;
   projectId?: string;
   gitlabUrl?: string;
 }

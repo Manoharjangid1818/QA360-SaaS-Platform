@@ -1,0 +1,47 @@
+version: '3.8'
+
+services:
+  qa360-framework:
+    build:
+      context: .
+      dockerfile: Dockerfile
+      target: tester
+    container_name: qa360-playwright
+    environment:
+      - CI=true
+      - TEST_URL=${TEST_URL:-http://localhost:3000}
+      - API_URL=${API_URL:-http://localhost:5000}
+      - NODE_ENV=test
+      - SLACK_WEBHOOK=${SLACK_WEBHOOK}
+      - DISCORD_WEBHOOK=${DISCORD_WEBHOOK}
+    volumes:
+      - ./playwright-report:/app/playwright-report
+      - ./test-results:/app/test-results
+      - ./allure-report:/app/allure-report
+      - ./allure-results:/app/allure-results
+      - ./screenshots:/app/screenshots
+      - ./videos:/app/videos
+    ports:
+      - "9323:9323"  # Allure report port
+    networks:
+      - qa360-network
+    restart: on-failure
+
+  allure-reporter:
+    image: frankescobar/allure-docker-service:2.21.0
+    container_name: allure-reporter
+    ports:
+      - "4040:4040"
+      - "9323:9323"
+    volumes:
+      - ./allure-results:/app/allure-results
+      - ./allure-report:/app/default-reports
+    networks:
+      - qa360-network
+    environment:
+      - CHECK_RESULTS_EVERY_SECONDS=5
+      - KEEP_HISTORY=1
+
+networks:
+  qa360-network:
+    driver: bridge

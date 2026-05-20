@@ -1,19 +1,28 @@
 import { test, expect } from '@playwright/test';
 
-test("My first test", async function({page}){
+/**
+ * Test Suite: Sample Unit Tests
+ * Tags: @sanity, @critical
+ * 
+ * Basic unit tests for assertion validation
+ */
+
+test("@sanity - My first test", async function({page}){
     expect(12).toBe(12)
 })
-test("My second test", async function({page}){
+
+test("@sanity - My second test", async function({page}){
     expect(100).toBe(100)
 })
-test.skip("My third test", async function({page}){
+
+test.skip("@sanity - My third test (skipped)", async function({page}){
     expect(2.0).toBe(2.0)
 })
 
-test.only("My fourth test", async function({page}){
+test("@critical - My fourth test", async function({page}){
     expect("Manohar jangid").toContain("Manohar")
 })
 
-test.only("My fifth test", async function({page}){
+test("@critical - My fifth test", async function({page}){
     expect("Manohar Jangid".includes("Jangid")).toBeTruthy()
 })

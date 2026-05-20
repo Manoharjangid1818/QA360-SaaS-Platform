@@ -1,0 +1,106 @@
+name: Playwright Tests - Regression Suite
+
+on:
+  push:
+    branches: [ main ]
+  schedule:
+    # Run regression tests nightly
+    - cron: '0 2 * * *'
+  workflow_dispatch:
+
+jobs:
+  regression-tests:
+    name: Run Regression Tests
+    runs-on: ubuntu-latest
+    timeout-minutes: 60
+    strategy:
+      matrix:
+        shard: [1, 2, 3, 4]
+        browser: [chromium, firefox, webkit]
+    
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+      
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '18'
+          cache: 'npm'
+      
+      - name: Install dependencies
+        run: npm ci
+      
+      - name: Install Playwright browsers
+        run: npx playwright install --with-deps ${{ matrix.browser }}
+      
+      - name: Run regression tests - Shard ${{ matrix.shard }}/4 (${{ matrix.browser }})
+        run: npm run test:regression -- --shard=${{ matrix.shard }}/4 --project=${{ matrix.browser }}
+        env:
+          TEST_URL: ${{ secrets.TEST_URL }}
+      
+      - name: Upload test results
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: regression-results-${{ matrix.browser }}-shard-${{ matrix.shard }}
+          path: allure-results/
+          retention-days: 30
+
+  merge-results:
+    name: Merge and Report Results
+    runs-on: ubuntu-latest
+    needs: regression-tests
+    if: always()
+    
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+      
+      - name: Download all artifacts
+        uses: actions/download-artifact@v4
+        with:
+          path: allure-results-raw/
+      
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '18'
+      
+      - name: Merge Allure results
+        run: |
+          npm install -g allure-commandline
+          allure generate allure-results-raw --clean -o allure-report
+      
+      - name: Upload merged report
+        uses: actions/upload-artifact@v4
+        with:
+          name: allure-report-regression
+          path: allure-report/
+          retention-days: 30
+      
+      - name: Publish report to GitHub Pages
+        if: success()
+        uses: actions/deploy-pages@v2
+        with:
+          artifact_name: allure-report-regression
+      
+      - name: Post to Slack
+        if: always()
+        uses: slackapi/slack-github-action@v1
+        with:
+          payload: |
+            {
+              "text": "QA360 Regression Tests - ${{ job.status }}",
+              "attachments": [{
+                "color": "${{ job.status == 'success' && 'good' || 'danger' }}",
+                "title": "Regression Test Summary",
+                "fields": [
+                  {"title": "Branch", "value": "${{ github.ref_name }}", "short": true},
+                  {"title": "Trigger", "value": "${{ github.event_name }}", "short": true}
+                ]
+              }]
+            }
+        env:
+          SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
+          SLACK_WEBHOOK_TYPE: INCOMING_WEBHOOK
