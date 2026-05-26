@@ -1,1 +1,1 @@
-- [QA360 migration](qa360-migration.md) — Next.js → Vite/React migration complete; all pages ported with mock data; Supabase optional via env vars.
+- [QA360 migration](qa360-migration.md) — Next.js → Vite/React migration complete; all pages ported; API server on port 8080; Vite proxies /api → 8080; OPENAI_API_KEY secret needed for AI generator.
