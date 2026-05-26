@@ -15,6 +15,7 @@ router.post("/ai-generate", async (req, res) => {
   }
 
   const apiKey =
+    process.env["OPENAI_API_KEY2"] ??
     process.env["API_KEY1"] ??
     process.env["OPENAI_API_KEY"];
 
@@ -22,7 +23,7 @@ router.post("/ai-generate", async (req, res) => {
     res.status(503).json({
       error: "OpenAI API key not configured. Add API_KEY1 to your Secrets.",
     });
-    return;
+    return;  
   }
 
   const total = Math.max(1, Math.min(50, Number(count) || 10));
@@ -59,13 +60,11 @@ You MUST return exactly ${total} test cases total (${positiveCount} positive, ${
   try {
     const maxTokens = Math.min(8000, 300 + total * 180);
 
-    const response = await fetch("https://openrouter.ai/api/v1/chat/completions", {
+    const response = await fetch("https://api.openai.com/v1/chat/completions", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
         Authorization: `Bearer ${apiKey}`,
-        "HTTP-Referer": "https://qa360.replit.app",
-        "X-Title": "QA360 Test Management",
       },
       body: JSON.stringify({
         model: "gpt-4o-mini",
