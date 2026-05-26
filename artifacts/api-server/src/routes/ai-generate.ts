@@ -14,7 +14,7 @@ router.post("/ai-generate", async (req, res) => {
     return;
   }
 
-  const apiKey = process.env["OPENAI_API_KEY"];
+  const apiKey = process.env["OPENAI_API_KEY"] ?? "PASTE_YOUR_KEY_HERE";
   if (!apiKey) {
     res.status(503).json({
       error:
@@ -58,22 +58,19 @@ You MUST return exactly ${total} test cases total (${positiveCount} positive, ${
   try {
     const maxTokens = Math.min(8000, 300 + total * 180);
 
-    const response = await fetch(
-      "https://api.openai.com/v1/chat/completions",
-      {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${apiKey}`,
-        },
-        body: JSON.stringify({
-          model: "gpt-4o-mini",
-          messages: [{ role: "user", content: prompt }],
-          response_format: { type: "json_object" },
-          max_tokens: maxTokens,
-        }),
+    const response = await fetch("https://api.openai.com/v1/chat/completions", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${apiKey}`,
       },
-    );
+      body: JSON.stringify({
+        model: "gpt-4o-mini",
+        messages: [{ role: "user", content: prompt }],
+        response_format: { type: "json_object" },
+        max_tokens: maxTokens,
+      }),
+    });
 
     if (!response.ok) {
       const err = await response.json().catch(() => ({}));
