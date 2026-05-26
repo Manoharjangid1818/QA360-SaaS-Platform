@@ -1,0 +1,1 @@
+- [QA360 migration](qa360-migration.md) — Next.js → Vite/React migration complete; all pages ported with mock data; Supabase optional via env vars.

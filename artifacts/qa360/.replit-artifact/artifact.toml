@@ -1,0 +1,31 @@
+kind = "web"
+previewPath = "/"
+title = "QA360 - Test Management Platform"
+version = "1.0.0"
+id = "artifacts/qa360"
+router = "path"
+
+[[integratedSkills]]
+name = "react-vite"
+version = "1.0.0"
+
+[[services]]
+name = "web"
+paths = [ "/" ]
+localPort = 23340
+
+[services.development]
+run = "pnpm --filter @workspace/qa360 run dev"
+
+[services.production]
+build = [ "pnpm", "--filter", "@workspace/qa360", "run", "build" ]
+publicDir = "artifacts/qa360/dist/public"
+serve = "static"
+
+[[services.production.rewrites]]
+from = "/*"
+to = "/index.html"
+
+[services.env]
+PORT = "23340"
+BASE_PATH = "/"
